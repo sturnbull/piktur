@@ -1,0 +1,40 @@
+TD.logo {
+  vertical-align: text-top;
+  text-align: left;
+}
+TD.searchlabel {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 16pt;
+  color: #ffffff;
+  vertical-align: text-top;
+  text-align: right;
+}
+TD.searchinput {
+  vertical-align: text-top;
+  text-align: left;
+}
+TD.formlabel {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 16pt;
+  color: #ffffff;
+  vertical-align: text-top;
+  text-align: right;
+}
+TD.forminput {
+  vertical-align: text-top;
+  text-align: left;
+}
+DIV {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 12pt;
+  color: #ffffff;
+}
+P {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 14pt;
+  color: #ffffff;
+}
