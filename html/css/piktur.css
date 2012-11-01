@@ -1,19 +1,32 @@
+BODY {
+  color: #000000;
+  background-color: #666666;
+}
+
+A:link { color: #0000EE; }
+A:active { color: #EE0000; }
+A:hover { color: #EE0000; }
+A:visited { color: #551A8B; }
+
 TD.logo {
-  vertical-align: text-top;
+  vertical-align: middle;
   text-align: left;
 }
+
 TD.searchlabel {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   font-size: 16pt;
   color: #ffffff;
-  vertical-align: text-top;
+  vertical-align: middle;
   text-align: right;
 }
+
 TD.searchinput {
-  vertical-align: text-top;
+  vertical-align: middle;
   text-align: left;
 }
+
 TD.formlabel {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
@@ -22,9 +35,28 @@ TD.formlabel {
   vertical-align: text-top;
   text-align: right;
 }
+
 TD.forminput {
   vertical-align: text-top;
   text-align: left;
+}
+
+TD.notice {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 12pt;
+  color: #ffffff;
+  vertical-align: middle;
+  text-align: center;
+}
+
+DIV.copyright {
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  font-size: 9pt;
+  color: #ffffff;
+  vertical-align: middle;
+  text-align: center;
 }
 DIV {
   font-family: Arial, Helvetica, sans-serif;

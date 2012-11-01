@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta content="text/html; charset=ISO-8859-1"
+      http-equiv="Content-Type">
+    <!---------------------------------------------------------->
+    <!-- This is the prototype home page ->
+<!---------------------------------------------------------->
+    <title>index</title>
+  </head>
+  <body alink="#EE0000" bgcolor="#666666" link="#0000EE" text="#000000"
+    vlink="#551A8B">
+    <table border="0" cellpadding="2" cellspacing="2" width="100%">
+      <tbody>
+        <tr>
+          <td valign="middle"> <img src="img/piktur.png" alt="piktur">
+          </td>
+          <td valign="middle"><a href="signin.html"><img alt="Sign In"
+                src="img/signinbutton.png" border="0" height="45"
+                width="125"></a></td>
+          <td valign="middle"><a href="signup.php"><img alt="Sign Up"
+                src="img/signupbutton.png" border="0" height="45"
+                width="136"></a></td>
+          <td align="right" valign="middle">
+            <!---------------------------------------------------------->
+            <!-- Need to call the search function for public images ->
+<!---------------------------------------------------------->
+            <form><font color="#ffffff"><b><font face="Helvetica, Arial,
+                    sans-serif"><big><big>Search </big></big></font></b></font><input
+                name="searchterm"><br>
+            </form>
+          </td>
+          <td valign="middle"><img
+              src="http://www.veryicon.com/icon/png/System/Must%20Have/Search.png"
+              alt="Search Icon" height="41" width="41"></td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <hr size="3" width="100%"><br>
+    <table border="0" cellpadding="2" cellspacing="2" width="100%">
+      <tbody>
+        <tr>
+          <td valign="top" width="25%"><br>
+          </td>
+          <td colspan="3" rowspan="1" align="center" height="500"
+            valign="top" width="50%">
+            <!---------------------------------------------------------->
+            <!-- Need put a random image here? ->
+<!----------------------------------------------------------> <img
+              alt="image" src="pikturs/DSCN0058.JPG" height="449" width="600"><br>
+          </td>
+          <td valign="top" width="25%"><br>
+          </td>
+        </tr>
+        <tr>
+          <td valign="top"><br>
+          </td>
+          <td align="right" valign="middle" width="20%">
+            <!---------------------------------------------------------->
+            <!-- random image change function ->
+<!----------------------------------------------------------> 
+<a href="imageview.html"><img alt="Random Image" src="img/randomimagebutton.png" border="0" height="50" width="256"></a>
+
+           <br>
+          </td>
+          <td valign="middle" width="10%"><br>
+          </td>
+          <td valign="middle" width="20%">
+            <!---------------------------------------------------------->
+            <!-- random Album select and go to album view function ->
+<!----------------------------------------------------------> 
+<a href="albumview.html"><img alt="Random Album" src="img/randomalbumbutton.png" height="50" width="260"></a><br>
+          </td>
+          <td valign="top"><br>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <br>
+    <hr size="3" width="100%"><br>
+    <br>
+    <br>
+  </body>
+</html>
