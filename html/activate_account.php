@@ -6,8 +6,10 @@ $hash = $_GET['key'];
 $message = 'Your account was not activated. Please contact the website administrator for assistance.';
 
 if ( $email_address and $hash ) {
+    $name = '';
+
     # Prepare the MySQL select statement on the server
-    if ( !( $stmt = $db->prepare( 'SELECT `user_id` FROM `piktur`.`users` WHERE `email_address` = ?' ) ) ) {
+    if ( !( $stmt = $db->prepare( 'SELECT `user_id`, `name` FROM `piktur`.`users` WHERE `email_address` = ?' ) ) ) {
         die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
     }
     else {
@@ -22,7 +24,7 @@ if ( $email_address and $hash ) {
             }
             else {
                 # Bind results
-                $stmt -> bind_result( $result );
+                $stmt -> bind_result( $id, $name );
 
                 # Fetch the value
                 $stmt -> fetch();
@@ -39,7 +41,7 @@ if ( $email_address and $hash ) {
     }
     else {
         # Bind the variables into the prepared statement
-        if ( !$stmt->bind_param( 'i', $result ) ) {
+        if ( !$stmt->bind_param( 'i', $id ) ) {
             die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
         }
         else {
@@ -52,6 +54,11 @@ if ( $email_address and $hash ) {
 
                 # Cleanup statement
                 $stmt->close();
+
+		# Create folder to store user albums
+                if ( !mkdir( "/var/www/html/pikturs/${name}/default", 0770, true ) ) {
+                    die('Failed to create folder for user albums.');
+                }
             }
 	}
     }
