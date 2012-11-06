@@ -50,6 +50,51 @@ TD.notice {
   text-align: center;
 }
 
+TD.left_top {
+  text-align: left;
+  vertical-align: top;
+}
+
+TD.left_middle {
+  text-align: left;
+  vertical-align: middle;
+}
+
+TD.left_bottom {
+  text-align: left;
+  vertical-align: bottom;
+}
+
+TD.center_top {
+  text-align: center;
+  vertical-align: top;
+}
+
+TD.center_middle {
+  text-align: center;
+  vertical-align: middle;
+}
+
+TD.center_bottom {
+  text-align: center;
+  vertical-align: bottom;
+}
+
+TD.right_top {
+  text-align: right;
+  vertical-align: top;
+}
+
+TD.right_middle {
+  text-align: right;
+  vertical-align: middle;
+}
+
+TD.right_bottom {
+  text-align: right;
+  vertical-align: bottom;
+}
+
 DIV.copyright {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
@@ -58,12 +103,14 @@ DIV.copyright {
   vertical-align: middle;
   text-align: center;
 }
+
 DIV {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;
   font-size: 12pt;
   color: #ffffff;
 }
+
 P {
   font-family: Arial, Helvetica, sans-serif;
   font-weight: bold;

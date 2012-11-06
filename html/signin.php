@@ -8,7 +8,8 @@ if ( $password ) $password_hash =  hash( 'sha512', $password );
 $failure = filter_input( INPUT_GET, 'failure', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^true$/" ) ) );
 
 
-if ( DEBUG ) {
+if ( DEBUG == TRUE ) {
+    echo DEBUG;
     echo "USERNAME: '$name'<br>";
     if ( isset( $password_hash ) ) { echo "PASSHASH: '$password_hash'<br>"; }
 }
@@ -88,7 +89,7 @@ require 'header.php';
     <form id="signin_form" name="signin_form" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
       <table border="0" cellpadding="2" cellspacing="2" width="100%">
         <tr>
-          <td colspan="1" rowspan="1" align="center" height="200" valign="top">
+          <td colspan="1" rowspan="1" height="200" class="center_top">
             <table border="0" cellpadding="2" cellspacing="4" width="100%">
               <tr>
                 <td class="formlabel">Username:</td>
@@ -106,7 +107,7 @@ require 'header.php';
           </td>
         </tr>
         <tr>
-          <td align="center" valign="middle" colspan="1">
+          <td class="center_middle">
             <input type="image" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/signinbutton.png" height="45" width="125" border="0" alt="Signin Button">
           </td>
         </tr>

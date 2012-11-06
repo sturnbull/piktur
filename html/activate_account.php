@@ -4,10 +4,14 @@ require_once 'global.inc';
 $email_address = filter_input( INPUT_GET, 'email', FILTER_VALIDATE_EMAIL );
 $hash = $_GET['key'];
 $message = 'Your account was not activated. Please contact the website administrator for assistance.';
+$album_id = '';
+$album_name = 'default';
+$album_description = 'Default album for user';
+$basedir = '/var/www/html';
+$path = '';
+$name = '';
 
 if ( $email_address and $hash ) {
-    $name = '';
-
     # Prepare the MySQL select statement on the server
     if ( !( $stmt = $db->prepare( 'SELECT `user_id`, `name` FROM `piktur`.`users` WHERE `email_address` = ?' ) ) ) {
         die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
@@ -56,11 +60,84 @@ if ( $email_address and $hash ) {
                 $stmt->close();
 
 		# Create folder to store user albums
-                if ( !mkdir( "/var/www/html/pikturs/${name}/default", 0770, true ) ) {
+                $path =  'pikturs/'.$name.'/default'
+                if ( !mkdir( "${basedir}/${path}", 0770, true ) ) {
                     die('Failed to create folder for user albums.');
                 }
             }
 	}
+    }
+
+    # Prepare the MySQL update statement on the server
+    if ( !( $stmt = $db->prepare( "INSERT INTO `piktur`.`albums` ( `album_name`, `album_description`, `path`, `user_id` ) VALUES ( ?, ?, ?, ? );" ) ) ) {
+        die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
+    }
+    else {
+        # Bind the variables into the prepared statement
+        if ( !$stmt->bind_param( 'sssi', $album_name, $album_description, $path, $id ) ) {
+            die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
+        }
+        else {
+            # Execute the SQL command
+            if ( !$stmt->execute() ) {
+                die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+            }
+            else {
+                # Cleanup statement
+                $stmt->close();
+            }
+        }
+    }
+
+    # Prepare the MySQL update statement on the server
+    if ( !( $stmt = $db->prepare( "SELECT `albums`.`album_id` FROM `piktur`.`albums` WHERE `albums`.`album_name` = '?' AND `albums`.`album_desription` = '?' AND `albums`.`user_id` = ? );" ) ) ) {
+        die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
+    }
+    else {
+        $path = 'pikturs/'.$name.'/default';
+        # Bind the variables into the prepared statement
+        if ( !$stmt->bind_param( 'ssi', $album_name, $album_description, $id ) ) {
+            die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
+        }
+        else {
+            # Execute the SQL command
+            if ( !$stmt->execute() ) {
+                die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+            }
+            else {
+                # Bind results
+                $stmt->bind_result( $album_id  );
+
+                # Fetch the value
+                $stmt->fetch();
+
+                # Cleanup statement
+                $stmt->close();
+            }
+        }
+    }
+
+
+    # Prepare the MySQL update statement on the server
+    if ( !( $stmt = $db->prepare( "INSERT INTO `piktur`.`premissions` ( `access_type`, `album_id`, `user_id` ) VALUES ( ?, ?, ? );" ) ) ) {
+        die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
+    }
+    else {
+        $path = 'pikturs/'.$name.'/default';
+        # Bind the variables into the prepared statement
+        if ( !$stmt->bind_param( 'sii', 'delete', $album_id, $id ) ) {
+            die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
+        }
+        else {
+            # Execute the SQL command
+            if ( !$stmt->execute() ) {
+                die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+            }
+            else {
+                # Cleanup statement
+                $stmt->close();
+            }
+        }
     }
 }
 

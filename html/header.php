@@ -1,8 +1,3 @@
-<?php 
-    foreach ($_SESSION as $key=>$val) {
-        echo "$key => $val<br>";
-    }
-?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
@@ -15,12 +10,12 @@
   <body>
     <table border="0" cellpadding="2" cellspacing="2" width="100%">
       <tr>
-        <td class="logo"><img src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/piktur.png" alt="PIKTUR Logo"></td>
+        <td class="left_top"><a href="http://<?php echo $_SERVER['SERVER_NAME'] ?>/"><img src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/piktur.png" alt="PIKTUR Logo"></a></td>
 <?php if ( isset( $_SESSION['authenticated'] ) ) { ?>
-        <td class="logo" colspan="2"><a href="http://<?php echo $_SERVER['SERVER_NAME'] ?>/signout.php"><img alt="Sign In" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/signoutbutton.png" border="0" height="45" width="125"></a></td>
+        <td class="middle_center"><a href="http://<?php echo $_SERVER['SERVER_NAME'] ?>/signout.php"><img alt="Sign In" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/signoutbutton.png" border="0" height="45" width="125"></a></td>
 <?php } else { ?>
-        <td class="logo"><a href="http://<?php echo $_SERVER['SERVER_NAME'] ?>/signin.php"><img alt="Sign In" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/signinbutton.png" border="0" height="45" width="125"></a></td>
-        <td class="logo"><a href="http://<?php echo $_SERVER['SERVER_NAME'] ?>/signup.php"><img alt="Sign Up" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/signupbutton.png" border="0" height="45" width="136"></a></td>
+        <td class="middle_center"><a href="http://<?php echo $_SERVER['SERVER_NAME'] ?>/signin.php"><img alt="Sign In" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/signinbutton.png" border="0" height="45" width="125"></a></td>
+        <td class="middle_center"><a href="http://<?php echo $_SERVER['SERVER_NAME'] ?>/signup.php"><img alt="Sign Up" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/signupbutton.png" border="0" height="45" width="136"></a></td>
 <?php } ?>
         <td class="searchlabel">Search:<input name="searchterm" id="searchterm"></td>
         <td class="searchinput">

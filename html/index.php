@@ -21,7 +21,7 @@
             <!---------------------------------------------------------->
             <!-- random image change function ->
 <!----------------------------------------------------------> 
-<a href="imageview.html"><img alt="Random Image" src="img/randomimagebutton.png" border="0" height="50" width="256"></a>
+<a href="imageview.php"><img alt="Random Image" src="img/randomimagebutton.png" border="0" height="50" width="256"></a>
 
            <br>
           </td>
