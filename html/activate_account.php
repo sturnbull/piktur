@@ -60,9 +60,11 @@ if ( $email_address and $hash ) {
                 $stmt->close();
 
 		# Create folder to store user albums
-                $path =  'pikturs/'.$name.'/default'
-                if ( !mkdir( "${basedir}/${path}", 0770, true ) ) {
-                    die('Failed to create folder for user albums.');
+                $path =  'pikturs/'.$name.'/default';
+                if (!is_dir( "${basedir}/${path}" ) ) {
+                    if ( !mkdir( "${basedir}/${path}", 0770, true ) ) {
+                        die('Failed to create folder for user albums.');
+                    }
                 }
             }
 	}
@@ -80,7 +82,7 @@ if ( $email_address and $hash ) {
         else {
             # Execute the SQL command
             if ( !$stmt->execute() ) {
-                die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+#                die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
             }
             else {
                 # Cleanup statement
@@ -90,11 +92,10 @@ if ( $email_address and $hash ) {
     }
 
     # Prepare the MySQL update statement on the server
-    if ( !( $stmt = $db->prepare( "SELECT `albums`.`album_id` FROM `piktur`.`albums` WHERE `albums`.`album_name` = '?' AND `albums`.`album_desription` = '?' AND `albums`.`user_id` = ? );" ) ) ) {
+    if ( !( $stmt = $db->prepare( "SELECT `albums`.`album_id` FROM `piktur`.`albums` WHERE `albums`.`album_name` = ? AND `albums`.`album_description` = ? AND `albums`.`user_id` = ?;" ) ) ) {
         die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
     }
     else {
-        $path = 'pikturs/'.$name.'/default';
         # Bind the variables into the prepared statement
         if ( !$stmt->bind_param( 'ssi', $album_name, $album_description, $id ) ) {
             die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
@@ -119,13 +120,13 @@ if ( $email_address and $hash ) {
 
 
     # Prepare the MySQL update statement on the server
-    if ( !( $stmt = $db->prepare( "INSERT INTO `piktur`.`premissions` ( `access_type`, `album_id`, `user_id` ) VALUES ( ?, ?, ? );" ) ) ) {
+    if ( !( $stmt = $db->prepare( "INSERT INTO `piktur`.`permissions` ( `access_type`, `album_id`, `user_id` ) VALUES ( ?, ?, ? );" ) ) ) {
         die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
     }
     else {
-        $path = 'pikturs/'.$name.'/default';
+	$perm = 'delete';
         # Bind the variables into the prepared statement
-        if ( !$stmt->bind_param( 'sii', 'delete', $album_id, $id ) ) {
+        if ( !$stmt->bind_param( 'sii', $perm, $album_id, $id ) ) {
             die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
         }
         else {

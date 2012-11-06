@@ -70,7 +70,7 @@ require 'header.php';
           <table border="0" cellpadding="2" cellspacing="10" width="100%">
             <tr>
 <?php for ( $i = 0; $i < $results; $i++ ) { ?>
-              <td  class="notice"><img src="pikturs/DSCN0058.JPG" alt="" height="75" width="100"><br><?php echo $names[$i] ?></td>
+              <td  class="notice"><a href="http://<?php echo $_SERVER['SERVER_NAME'].'/imageview.php?album='.$ids[$i] ?>"><img src="pikturs/DSCN0058.JPG" alt="" height="75" width="100"><br><?php echo $names[$i] ?></a></td>
 <?php if ( ( $i / $albums_per_row ) == 1 ) { ?>
             <tr>
             </tr>
@@ -87,7 +87,6 @@ require 'header.php';
           <a href="http://<?php echo $_SERVER['SERVER_NAME'].'/image_upload.php' ?>"><img alt="New Albumn" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/newbutton.png"></a>
           <a href="http://<?php echo $_SERVER['SERVER_NAME'].'/delete_album.php' ?>"><img alt="Delete Album" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/deletebutton.png"></a>
           <a href="http://<?php echo $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?page=".($page + 1) ?>"><img alt="Next Page" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/nextbutton.png"></a>
-          <div>Page # of #</div>
         </td>
       </tr>
       <tr><td><hr size="3" width="100%"></td></tr>
