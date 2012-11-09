@@ -30,4 +30,10 @@ if ( isset( $_SESSION['timeout'] ) ) {
     }
 }
 
+# Check session toke
+if ( isset( $_SESSION['authenticated'] ) and isset( $_COOKIE['token'] ) ) {
+    if ( $_COOKIE['token'] != md5( $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'] . session_id() ) ) {
+        header( 'Location: http://'.$_SERVER['SERVER_NAME'].'/signout.php' );
+    }
+}
 ?>
