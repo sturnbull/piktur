@@ -8,6 +8,8 @@ defined( 'DB_USER' ) or define( 'DB_USER', 'ssluser' );
 defined( 'DB_PASS' ) or define( 'DB_PASS', 'piktur100' );
 defined( 'DEBUG' ) or define( 'DEBUG', FALSE );
 
+$protocol = $_SERVER['HTTPS'] == '' ? 'http://' : 'https://';
+
 # Database connectivity over SSL
 $db = mysqli_init(); 
 if ( !$db->ssl_set( '/etc/pki/private/piktur.poly.edu.key', '/etc/pki/public/piktur.poly.edu.pem', '/etc/pki/cacerts/ca-cert.pem', NULL, NULL ) ) {
@@ -26,14 +28,14 @@ if ( isset( $_SESSION['timeout'] ) ) {
     $sessionTTL = time() - $_SESSION['timeout'];
     if ( $sessionTTL > 600 ) {
         session_destroy();
-        header( 'Location: http://'.$_SERVER['SERVER_NAME'].'/signout.php' );
+        header( 'Location: '.$protocol.$_SERVER['SERVER_NAME'].'/signout.php' );
     }
 }
 
 # Check session toke
 if ( isset( $_SESSION['authenticated'] ) and isset( $_COOKIE['token'] ) ) {
     if ( $_COOKIE['token'] != md5( $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'] . session_id() ) ) {
-        header( 'Location: http://'.$_SERVER['SERVER_NAME'].'/signout.php' );
+        header( 'Location: '.$protocol.$_SERVER['SERVER_NAME'].'/signout.php' );
     }
 }
 ?>

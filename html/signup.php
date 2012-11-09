@@ -20,39 +20,37 @@ if ( DEBUG ) {
 }
 
 #verify that the captcha was correct
-if ( ! empty( $_POST ) && ($securimage->check($_POST['captcha_code']) == true)) {
-  // the code was incorrect
-  // you should handle the error so that the form processor doesn't continue
-  // or you can use the following code if there is no validation or you do not know how
-  echo "The security code entered was incorrect.<br /><br />";
+if ( ! empty( $_POST ) && ( $securimage->check( $_POST['captcha_code'] ) == true ) ) {
+    // the code was incorrect
+    // you should handle the error so that the form processor doesn't continue
+    // or you can use the following code if there is no validation or you do not know how
+    echo "The security code entered was incorrect.<br /><br />";
   
+    # Only insert user if valid variabls exist
+    if ( $name and $email_address and $password ) {
+        # Prepare the MySQL insert statement on the server
+        if ( !( $stmt = $db->prepare( 'INSERT INTO `piktur`.`users` ( `name`, `email_address`, `password_hash` ) VALUES ( ?, ?, ? )' ) ) ) {
+            die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
+        }
+        else {
+            # Bind the variables into the prepared statement
+            if ( !$stmt->bind_param( 'sss', $name, $email_address, $password_hash ) ) {
+                die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
+            }
+            else {
+                # Execute the SQL command
+                if ( !$stmt->execute() ) {
+                    die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+                }
 
+                # Cleanup statement
+                    $stmt->close();
+            }
+        }
 
-	# Only insert user if valid variabls exist
-	if ( $name and $email_address and $password ) {
-		# Prepare the MySQL insert statement on the server
-		if ( !( $stmt = $db->prepare( 'INSERT INTO `piktur`.`users` ( `name`, `email_address`, `password_hash` ) VALUES ( ?, ?, ? )' ) ) ) {
-			die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
-		}
-		else {
-			# Bind the variables into the prepared statement
-			if ( !$stmt->bind_param( 'sss', $name, $email_address, $password_hash ) ) {
-				die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
-			}
-			else {
-				# Execute the SQL command
-				if ( !$stmt->execute() ) {
-					die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
-				}
-
-				# Cleanup statement
-				$stmt->close();
-			}
-		}
-
-		# Send email to user to activate account
-		$subject = 'PIKTUR account confirmation';
-		$message = '
+        # Send email to user to activate account
+	$subject = 'PIKTUR account confirmation';
+        $message = '
 	<html>
 	<head>
 	  <title>PIKTUR account confirmation</title>
@@ -64,24 +62,23 @@ if ( ! empty( $_POST ) && ($securimage->check($_POST['captcha_code']) == true)) 
 		  <td class="logo"><img src="http://piktur.poly.edu/img/piktur.png" alt="PIKTUR Logo"></td>
 		</tr>
 		<tr>
-		  <td class="logo">Your email address was recently used to register at the PIKTUR website. If you did not create an account, please disregard this message. If you wish to activate the account, click on the following link: <a href="http://piktur.poly.edu/activate_account.php?email='.$email_address.'&key='.$password_hash.'">Activate Account</a></td>
+		  <td class="logo">Your email address was recently used to register at the PIKTUR website. If you did not create an account, please disregard this message. If you wish to activate the account, click on the following link: <a href="https://piktur.poly.edu/activate_account.php?email='.$email_address.'&key='.$password_hash.'">Activate Account</a></td>
 		</tr>
 	  </table>
 	</body>
 	</html>
 	';
 
-		$headers  = 'MIME-Version: 1.0' . "\r\n";
-		$headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-		$headers .= 'From: webmaster@piktur.poly.edu' . "\r\n";
-		$headers .= 'X-Mailer: PHP/' . phpversion();
+        $headers  = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+        $headers .= 'From: webmaster@piktur.poly.edu' . "\r\n";
+        $headers .= 'X-Mailer: PHP/' . phpversion();
 
-		if ( mail( "$name<$email_address>", $subject, $message, $headers ) ) {
-			header ( 'Location: http://'.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?confirm=true' ); 
-		}
-	}
+        if ( mail( "$name<$email_address>", $subject, $message, $headers ) ) {
+            header ( 'Location: http://'.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?confirm=true' ); 
+        }
+    }
 }
-
 
 require 'header.php';
 ?>
@@ -94,11 +91,11 @@ require 'header.php';
       </tbody>
     </table>
 <?php } else { ?>
-    <form id="add_user_form" name="add_user_form" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
+    <form id="add_user_form" name="add_user_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . '/' . $_SERVER['PHP_SELF'] ?>" method="post">
       <table border="0" cellpadding="2" cellspacing="2" width="100%">
         <tbody>
           <tr>
-            <td colspan="1" rowspan="1" align="center" height="200" valign="top">
+            <td colspan="1" rowspan="1" height="200" class="center_top">
               <table border="0" cellpadding="2" cellspacing="4" width="100%">
                 <tbody>
                   <tr>
@@ -133,8 +130,8 @@ require 'header.php';
                   </tr>
                   <tr>
                     <td class="formlabel"><img id="captcha" src="/securimage/securimage_show.php" alt="CAPTCHA Image" /></td>
-                    <td class="forminput">
-                      <input type="text" name="captcha_code" size="10" maxlength="6" />
+                    <td class="left_middle">
+                      <input type="text" name="captcha_code" size="18" maxlength="6" />
                       <a href="#" onclick="document.getElementById('captcha').src = '/securimage/securimage_show.php?' + Math.random(); return false">[ Different Image ]</a>
                     </td>
                   </tr>
@@ -143,8 +140,8 @@ require 'header.php';
             </td>
           </tr>
           <tr>
-            <td align="center" valign="middle" colspan="1">
-              <input type="image" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/signupbutton.png" height="45" width="125" border="0" alt="Signup Button">
+            <td colspan="1" class="center_middle">
+              <input type="image" src="<?php echo  $protocol . $_SERVER['SERVER_NAME'] ?>/img/signupbutton.png" height="45" width="125" border="0" alt="Signup Button">
             </td>
           </tr>
         </tbody>
@@ -152,6 +149,6 @@ require 'header.php';
     </form>
 <?php } ?>
 <?php require 'footer.php'; ?>
-    <script type="text/javascript" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/js/livevalidation_signup.js"></script>
+    <script type="text/javascript" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/js/livevalidation_signup.js"></script>
   </body>
 </html>

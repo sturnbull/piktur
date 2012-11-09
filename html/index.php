@@ -7,7 +7,7 @@
       </tr>
       <tr>
         <td class="center_middle">
-          <a href="http://<?php echo $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'] ?>"><img alt="Random Image" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/randomimagebutton.png" border="0" height="50" width="256"></a>
+          <a href="http://<?php echo $_SERVER['PHP_SELF'] ?>"><img alt="Random Image" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/randomimagebutton.png" border="0" height="50" width="256"></a>
         </td>
       </tr>
     </table>

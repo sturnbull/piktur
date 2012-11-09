@@ -71,10 +71,10 @@ if ( isset( $name ) and isset( $password_hash ) ) {
         setcookie ( 'token', md5( $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'] . session_id() ), time()+$inactive );
 
         # Redirect user to albumview
-        header ( 'Location: http://'.$_SERVER['SERVER_NAME'].'/albumview.php' );
+        header ( 'Location: '.$protocol.$_SERVER['SERVER_NAME'].'/albumview.php' );
     }
     else {
-        header ( 'Location: http://'.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?failure=true' );
+        header ( 'Location: '.$protocol.$_SERVER['PHP_SELF'].'?failure=true' );
     }
 }
 
@@ -82,41 +82,33 @@ require 'header.php';
 ?>
 <?php if ( $failure ) { ?>
     <table border="0" cellpadding="2" cellspacing="2" width="100%">
-      <tbody>
-        <tr>
-          <td class="notice">Invalid username or password!</td>
-        </tr>
-      </tbody>
+      <tr>
+        <td class="notice">Invalid username or password!</td>
+      </tr>
     </table>
 <?php } ?>
     <form id="signin_form" name="signin_form" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
       <table border="0" cellpadding="2" cellspacing="2" width="100%">
         <tr>
-          <td colspan="1" rowspan="1" height="200" class="center_top">
-            <table border="0" cellpadding="2" cellspacing="4" width="100%">
-              <tr>
-                <td class="formlabel">Username:</td>
-                <td class="forminput">
-                  <input size="18" name="username" id="username" type="text"<?php if ( $name ) echo " value=\"$name\""; ?>>
-                </td>
-              </tr>
-              <tr>
-                <td class="formlabel">Password:</td>
-                <td class="forminput">
-                  <input size="18" name="password" id="password" type="password"<?php if ( $password ) echo " value=\"$password\""; ?>>
-                </td>
-              </tr>
-            </table>
+          <td class="formlabel">Username:</td>
+          <td class="forminput">
+            <input size="18" name="username" id="username" type="text"<?php if ( $name ) echo " value=\"$name\""; ?>>
+          </td>
+        </tr>
+        <tr>
+          <td class="formlabel">Password:</td>
+          <td class="forminput">
+            <input size="18" name="password" id="password" type="password"<?php if ( $password ) echo " value=\"$password\""; ?>>
           </td>
         </tr>
         <tr>
           <td class="center_middle">
-            <input type="image" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/signinbutton.png" height="45" width="125" border="0" alt="Signin Button">
+            <input type="image" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/signinbutton.png" height="45" width="125" border="0" alt="Signin Button">
           </td>
         </tr>
       </table>
     </form>
 <?php require 'footer.php'; ?>
-    <script type="text/javascript" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/js/livevalidation_signin.js"></script>
+    <script type="text/javascript" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/js/livevalidation_signin.js"></script>
   </body>
 </html>
