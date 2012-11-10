@@ -2,9 +2,7 @@
 require_once 'global.inc';
 
 # Prepare the MySQL query statement to select publicly accessible images
-$sql = "SELECT CONCAT( `albums`.`path`, '/', `images`.`file_name` ) AS file, `images`.`image_checksum` FROM `images` JOIN ( `albums`, `album_images` ) ON ( `images`.`image_id` = `album_images`.`image_id` AND `album_images`.`album_id` = `albums`.`album_id` ) WHERE `images`.`image_id` >= ( SELECT FLOOR( MAX( `images`.`image_id` ) * RAND() ) AND `images`.`public` = 'public' FROM `images` ) ORDER BY `images`.`image_id` LIMIT 1";
-
-if ( !( $stmt = $db->prepare( $sql ) ) ) {
+if ( !( $stmt = $db->prepare( "SELECT CONCAT( `albums`.`path`, '/', `images`.`file_name` ) AS file, `images`.`image_checksum` FROM `images` JOIN ( `albums`, `album_images` ) ON ( `images`.`image_id` = `album_images`.`image_id` AND `album_images`.`album_id` = `albums`.`album_id` ) WHERE `images`.`public` = 'public' ORDER BY RAND() LIMIT 1" ) ) ) {
     die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
 }
 elseif ( !$stmt->execute() ) {
@@ -22,7 +20,7 @@ $stmt->close();
 
 # Ensure image checksum is correct before allowing it to be displayed
 if ( $image_checksum != hash_file( 'md5', '/var/www/html/'.$file ) ) {
-    die( 'Image failed checksum verification.' );
+    die( "Image failed checksum verification: $file" );
 }
 
 require 'header.php'; ?>

@@ -14,19 +14,19 @@ $i = 0;
 # Prepare the MySQL query statement to select publicly accessible images
 $sql = "SELECT `images`.`image_id`, CONCAT( `albums`.`path`, '/', `images`.`file_name` ) AS file, `images`.`description`, `images`.`image_checksum` FROM `images` ";
 $sql .= "JOIN `album_images` ON `album_images`.`image_id` = `images`.`image_id` ";
-$sql .= "JOIN `albums` ON `albums`.`album_id` = `album_images`.`album_id` ";
-$sql .= "WHERE `images`.`public` = 'public'";
+$sql .= "JOIN `albums` ON `albums`.`album_id` = `album_images`.`album_id` WHERE 1";
+#$sql .= " AND `images`.`public` = 'public'";
 if ( $_SESSION['authenticated'] == 'true' ) { $sql .= " AND `albums`.`album_id` = $album_id;"; }
 
 if ( DEBUG ) {
-    echo "SQL: ".$sql.'<br>';
+  echo "SQL: ".$sql.'<br>';
 }
 
 if ( !( $stmt = $db->prepare($sql) ) ) {
-    die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
+  die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
 }
 elseif ( !$stmt->execute() ) {
-    die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+  die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
 }
 
 # Bind results
@@ -38,26 +38,62 @@ $results = $stmt->num_rows;
 $prev = max( ($offset - 1), 0 );
 $next = min( ($offset + 1), ( $results - 1 ) );
 if ( DEBUG ) {
-    echo "RESULTS: ".$results.'<br>';
-    echo "OFFSET: $offset<br>";
-    echo "PREVIOUS: $prev<br>";
-    echo "NEXT: $next<br>";
+  echo "RESULTS: ".$results.'<br>';
+  echo "OFFSET: $offset<br>";
+  echo "PREVIOUS: $prev<br>";
+  echo "NEXT: $next<br>";
 }
 
 # Fetch the values into arrays
 while ( $stmt->fetch() ) {
-    # Review results
-    if ( DEBUG ) {
-        echo "IMAGE_ID[$i]: ".$image_id.'<br>';
-        echo "FILE[$i]: $file<br>";
-        echo "IMAGE_CHECKSUM[$i]: $image_checksum<br>";
-        echo "IMAGE_DESCRIPTION[$i]: $image_description<br>";
+  # Prepare the MySQL select statement on the server
+  if ( !( $tag_stmt = $db->prepare( "SELECT `tags`.`tag_description` FROM `tags` WHERE `image_id` = ?" ) ) ) {
+
+    die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
+  }
+  else {
+    # Bind the variables into the prepared statement
+    if ( !$tag_stmt->bind_param( 'i', $image_id ) ) {
+      die( 'Binding parameters failed: (' . $tag_stmt->errno . ') ' . $tag_stmt->error );
     }
-    $ids[$i] = $image_id;
-    $files[$i] = $file;
-    $checksums[$i] = $image_checksum;
-    $descriptions[$i] = $image_description;
-    $i++;
+    else {
+      # Execute the SQL command
+      if ( !$tag_stmt->execute() ) {
+        die( 'Execute failed: (' . $tag_stmt->errno . ') ' . $tag_stmt->error );
+      }
+      else {
+        # Bind results
+        $tag_stmt->bind_result( $tag );
+
+        # Fetch the values into array
+        $j=0;
+	$tag_list = array();
+        while ( $tag_stmt->fetch() ) {
+          $tag_list[$j] = $tag;
+          $j++;
+        }
+
+        # Cleanup statement
+        $tag_stmt->close();
+      }
+    }
+  }
+
+
+
+  # Review results
+  if ( DEBUG ) {
+    echo "IMAGE_ID[$i]: ".$image_id.'<br>';
+    echo "FILE[$i]: $file<br>";
+    echo "IMAGE_CHECKSUM[$i]: $image_checksum<br>";
+    echo "IMAGE_DESCRIPTION[$i]: $image_description<br>";
+  }
+  $ids[$i] = $image_id;
+  $files[$i] = $file;
+  $tags[$i] = implode( ', ', $tag_list );
+  $checksums[$i] = $image_checksum;
+  $descriptions[$i] = $image_description;
+  $i++;
 }
 
 require 'header.php';
@@ -101,12 +137,7 @@ require 'header.php';
 <!---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---->
 	<a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/image_upload.php' ?>"><img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/newbutton.png' ?>" height="40" width="87" alt="newimage"></a><br>
           </td>
-          <td colspan="3" rowspan="1" align="center" valign="middle">
-<!---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---->
-            <!-- display image tags here-->
-<!---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---->
-            <font color="#ffffff" face="Helvetica, Arial, sans-serif">TAG
-              TAG TAG TAG TAG TAG TAG TAG TAG TAG </font> </td>
+          <td colspan="3" rowspan="1" class="tag_list"><?php echo $tags[$offset]; ?></td>
           <td valign="top">
 <!---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---->
             <!-- delete this image -->
