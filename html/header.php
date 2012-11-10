@@ -10,7 +10,7 @@
   <body>
     <table border="0" cellpadding="2" cellspacing="2" width="100%">
       <tr>
-        <td class="left_top"><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/"><img src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/piktur.png" alt="PIKTUR Logo"></a></td>
+        <td class="left_top"><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'] .'/'; if ( $_SESSION['authenticated'] == 'true' ) { echo 'albumview.php'; }?>"><img src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/piktur.png" alt="PIKTUR Logo"></a></td>
 <?php if ( isset( $_SESSION['authenticated'] ) ) { ?>
         <td class="middle_center"><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/signout.php"><img alt="Sign In" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/signoutbutton.png" border="0" height="45" width="125"></a></td>
 <?php } else { ?>
@@ -19,7 +19,7 @@
 <?php } ?>
         <td class="searchlabel">Search:<input name="searchterm" id="searchterm"></td>
         <td class="searchinput">
-          <form id="search_form" name="add_user_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/search.php" method="post">
+          <form id="search_form" name="search_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/search.php" method="post">
             <input type="image" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/search.png" alt="Search Button" height="24" width="24">
           </form>    
         </td>
