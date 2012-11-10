@@ -1,4 +1,3 @@
-<?php $protocol = ( isset( $_SERVER['HTTPS'] ) and $_SERVER['HTTPS'] == '' ) ? 'http://' : 'https://'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>

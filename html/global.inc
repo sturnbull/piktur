@@ -8,7 +8,7 @@ defined( 'DB_USER' ) or define( 'DB_USER', 'ssluser' );
 defined( 'DB_PASS' ) or define( 'DB_PASS', 'piktur100' );
 defined( 'DEBUG' ) or define( 'DEBUG', FALSE );
 
-$protocol = $_SERVER['HTTPS'] == '' ? 'http://' : 'https://';
+$protocol = ( isset( $_SERVER['HTTPS'] ) and $_SERVER['HTTPS'] == '' ) ? 'http://' : 'https://';
 
 # Database connectivity over SSL
 $db = mysqli_init(); 

@@ -101,6 +101,8 @@ require 'header.php';
             <input size="18" name="password" id="password" type="password"<?php if ( $password ) echo " value=\"$password\""; ?>>
           </td>
         </tr>
+      </table>
+      <table border="0" cellpadding="2" cellspacing="2" width="100%">
         <tr>
           <td class="center_middle">
             <input type="image" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/signinbutton.png" height="45" width="125" border="0" alt="Signin Button">
