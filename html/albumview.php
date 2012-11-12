@@ -72,10 +72,10 @@ require 'header.php';
         <td colspan="3" rowspan="1" align="center" height="200" valign="top" width="100%">
           <table border="0" cellpadding="2" cellspacing="10" width="100%">
             <tr>
-<?php $i=1; # set the album number
+<?php $i=0; # set the album number
     for ( $j = 0; $j < $rows_per_page; $j++ ) { #display each row of albums
       for ( $k = 0; $k < $albums_per_row; $k++ ) { # display 1 album per column
-	  if ( $i <= $results) {
+	  if ( $i < $results) {
 	  # display user album ?>
 	  <td  class="notice"><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/imageview.php?album='.$ids[$i] ?>"><img src="pikturs/DSCN0058.JPG" alt="" height="75" width="100"><br><?php echo $names[$i] ?></a></td>
 	  <?php
