@@ -1,14 +1,22 @@
 <?php
 
+function print_array( $var ) 
+{ 
+    $input =var_export( $var, true ); 
+    $input = preg_replace( "! => \n\W+ array \(!Uims", " => Array ( ", $input ); 
+    $input = preg_replace( "!array \(\W+\),!Uims", "Array ( ),", $input ); 
+    return( "<pre>".str_replace('><?', '>', highlight_string( '<'.'?'.$input, true ) )."</pre>" ); 
+} 
+
 # Defined constants
 defined( 'DB_NAME' ) or define( 'DB_NAME', 'piktur' );
 defined( 'DB_HOST' ) or define( 'DB_HOST', 'piktur2.poly.edu' );
 defined( 'DB_PORT' ) or define( 'DB_PORT', '3306' );
 defined( 'DB_USER' ) or define( 'DB_USER', 'ssluser' );
 defined( 'DB_PASS' ) or define( 'DB_PASS', 'piktur100' );
-defined( 'DEBUG' ) or define( 'DEBUG', FALSE );
+defined( 'DEBUG' ) or define( 'DEBUG', TRUE );
 
-$protocol = ( isset( $_SERVER['HTTPS'] ) and $_SERVER['HTTPS'] == '' ) ? 'http://' : 'https://';
+$protocol = ( isset( $_SERVER['HTTPS'] ) and $_SERVER['HTTPS'] == 'on' ) ? 'https://' : 'http://';
 
 # Database connectivity over SSL
 $db = mysqli_init(); 
