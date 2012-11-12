@@ -67,7 +67,7 @@ if ( isset( $_SESSION['user_id'] ) ) {
 }
 require 'header.php';
 ?>
-    <table border="1" cellpadding="2" cellspacing="2" width="100%">
+    <table border="0" cellpadding="2" cellspacing="2" width="100%">
       <tr>
         <td colspan="3" rowspan="1" align="center" height="200" valign="top" width="100%">
           <table border="0" cellpadding="2" cellspacing="10" width="100%">
