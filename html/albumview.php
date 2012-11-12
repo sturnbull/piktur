@@ -2,9 +2,9 @@
 require_once 'global.inc';
 
 # Define page layout - reset by PRH 11/11
-$albums_per_page = 8; # reset by PRH 11/11
+$albums_per_page = 12; # reset by PRH 11/11
 $albums_per_row = 4; # reset by PRH 11/11
-$rows_per_page = 2; # reset by PRH 11/11
+$rows_per_page = 3; # reset by PRH 11/11
 $i = 0;
 $j = 0;
 $k = 0;
@@ -67,7 +67,7 @@ if ( isset( $_SESSION['user_id'] ) ) {
 }
 require 'header.php';
 ?>
-    <table border="0" cellpadding="2" cellspacing="2" width="100%">
+    <table border="1" cellpadding="2" cellspacing="2" width="100%">
       <tr>
         <td colspan="3" rowspan="1" align="center" height="200" valign="top" width="100%">
           <table border="0" cellpadding="2" cellspacing="10" width="100%">
@@ -96,11 +96,15 @@ require 'header.php';
       </tr>
       <tr><td><hr size="3" width="100%"></td></tr>
       <tr>
-        <td class="center_middle">
+        <td class="center_middle" width = "30%">
           <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?page=".max( ($page - 1), 0 ) ?>"><img alt="Previous Page" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/prevbutton.png"></a>
-          <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/new_album.php' ?>"><img alt="New Albumn" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/newbutton.png"></a>
-          <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_album.php' ?>"><img alt="Delete Album" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/deletebutton.png"></a>
-          <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?page=".($page + 1) ?>"><img alt="Next Page" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/nextbutton.png"></a>
+        </td>
+        <td class="center_middle">
+           <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/new_album.php' ?>"><img alt="New Albumn" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/newbutton.png"></a>
+           <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_album.php' ?>"><img alt="Delete Album" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/deletebutton.png"></a>
+        </td>
+        <td class="center_middle" width = "30%">
+        <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?page=".($page + 1) ?>"><img alt="Next Page" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/nextbutton.png"></a>
         </td>
       </tr>
       <tr><td><hr size="3" width="100%"></td></tr>
