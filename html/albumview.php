@@ -94,7 +94,7 @@ require 'header.php';
           </table>
         </td>
       </tr>
-      <tr><td><hr size="3" width="100%"></td></tr>
+      <tr><td colspan="3"><hr size="3" width="100%"></td></tr>
       <tr>
         <td class="center_middle" width = "30%">
         <?php if ($page > 0) { ?>	
@@ -106,10 +106,12 @@ require 'header.php';
            <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_album.php' ?>"><img alt="Delete Album" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/deletebutton.png"></a>
         </td>
         <td class="center_middle" width = "30%">
+        <?php if ($results > $albums_per_page) { ?>
         <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?page=".($page + 1) ?>"><img alt="Next Page" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/nextbutton.png"></a>
-        </td>
+	<?php } ?>
+	</td>
       </tr>
-      <tr><td><hr size="3" width="100%"></td></tr>
+      <tr><td colspan="3"><hr size="3" width="100%"></td></tr>
     </table>
   </body>
 </html>
