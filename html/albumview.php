@@ -1,11 +1,14 @@
 <?php
 require_once 'global.inc';
 
-# Define page layout
-$albums_per_page = 12;
-$albums_per_row = 3;
+# Define page layout - reset by PRH 11/11
+$albums_per_page = 8; # reset by PRH 11/11
+$albums_per_row = 4; # reset by PRH 11/11
+$rows_per_page = 2; # reset by PRH 11/11
 $i = 0;
-$results = 0;
+$j = 0;
+$k = 0;
+$results = 0; #holds number of user albums
 $page = filter_input( INPUT_GET, 'page', FILTER_VALIDATE_INT, array( array("min_range"=>0) ) );
 if ( !isset ( $page ) ) { $page = 0; };
 $ids = array(); 
@@ -69,13 +72,24 @@ require 'header.php';
         <td colspan="3" rowspan="1" align="center" height="200" valign="top" width="100%">
           <table border="0" cellpadding="2" cellspacing="10" width="100%">
             <tr>
-<?php for ( $i = 0; $i < $results; $i++ ) { ?>
-              <td  class="notice"><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/imageview.php?album='.$ids[$i] ?>"><img src="pikturs/DSCN0058.JPG" alt="" height="75" width="100"><br><?php echo $names[$i] ?></a></td>
-<?php if ( ( $i / $albums_per_row ) == 1 ) { ?>
-            <tr>
-            </tr>
-<?php }
-} ?>
+<?php $i=1; # set the album number
+    for ( $j = 0; $j < $rows_per_page; $j++ ) { #display each row of albums
+      for ( $k = 0; $k < $albums_per_row; $k++ ) { # display 1 album per column
+	  if ( $i <= $results) {
+	  # display user album ?>
+	  <td  class="notice"><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/imageview.php?album='.$ids[$i] ?>"><img src="pikturs/DSCN0058.JPG" alt="" height="75" width="100"><br><?php echo $names[$i] ?></a></td>
+	  <?php
+	  $i++; # increment album number
+	  } else { 
+	  # display empty album ?>
+	  <td  class="notice"><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/new_album.php'?>"><img src="img/emptyfolder.png" alt="" height="75" width="100"><br>Create New</a></td>
+	  <?php	  
+	  } # end if else
+      } # end of a row - close the row
+      ?>
+      </tr>
+      <tr>
+      <?php } # done generating table  ?>
             </tr>
           </table>
         </td>
@@ -84,7 +98,7 @@ require 'header.php';
       <tr>
         <td class="center_middle">
           <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?page=".max( ($page - 1), 0 ) ?>"><img alt="Previous Page" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/prevbutton.png"></a>
-          <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/image_upload.php' ?>"><img alt="New Albumn" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/newbutton.png"></a>
+          <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/new_album.php' ?>"><img alt="New Albumn" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/newbutton.png"></a>
           <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_album.php' ?>"><img alt="Delete Album" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/deletebutton.png"></a>
           <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?page=".($page + 1) ?>"><img alt="Next Page" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/nextbutton.png"></a>
         </td>
