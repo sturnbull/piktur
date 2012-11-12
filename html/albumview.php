@@ -97,7 +97,9 @@ require 'header.php';
       <tr><td><hr size="3" width="100%"></td></tr>
       <tr>
         <td class="center_middle" width = "30%">
+        <?php if ($page > 0) { ?>	
           <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF']."?page=".max( ($page - 1), 0 ) ?>"><img alt="Previous Page" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/prevbutton.png"></a>
+	<?php } ?>
         </td>
         <td class="center_middle">
            <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/new_album.php' ?>"><img alt="New Albumn" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/newbutton.png"></a>
