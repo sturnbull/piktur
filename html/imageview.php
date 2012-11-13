@@ -103,29 +103,33 @@ require 'header.php';
         </tr>
         <tr>
           <td valign="top"><br></td>
-          <td colspan="3" rowspan="1" class="notice"><?php echo basename( dirname( $file )  ); ?></td>
+          <td colspan="3" rowspan="1" class="notice"><?php echo basename( dirname( $files[$offset] )  ); ?></td>
           <td valign="top"><br></td>
         </tr>
         <tr>
           <td valign="top"><br></td>
-          <td colspan="3" rowspan="1" class="notice"><?php echo basename( $file ); ?></td>
+          <td colspan="3" rowspan="1" class="notice"><?php echo $descriptions[$offset]; ?></td>
           <td valign="top"><br></td>
         </tr>
         <tr>
           <td align="right" valign="top" width="10%">
+<?php if ( $offset > 0 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?offset='.$prev ?>">
               <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$files[$prev] ?>" alt="Previous Image" height="75" width="100"><br>
               <div class="copyight">Previous in Album</div>
             </a>
+<?php } ?>
           </td>
           <td colspan="3" rowspan="1" align="center" height="200" valign="top" width="650">
             <img alt="<?php echo $descriptions[$offset] ?>" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$files[$offset] ?>" height="449" width="600"><br>
           </td>
           <td align="left" valign="top" width="10%">
+<?php if ( $offset < sizeof( $ids ) - 1 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?offset='.$next ?>">
               <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$files[$next] ?>" alt="Next Image" height="75" width="100"><br>
               <div class="copyight">Next in Album</div>
             </a>
+<?php } ?>
           </td>
         </tr>
         <tr>
@@ -165,14 +169,18 @@ require 'header.php';
           <td valign="top"><br>
           </td>
           <td align="right" valign="middle" width="20%">
+<?php if ( $offset > 0 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?offset='.$prev ?>"><img alt="next" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/prevbutton.png' ?>" height="40" width="120"></a>
+<?php } ?>
           </td>
           <td align="center" valign="middle" width="10%"> <font
               face="Helvetica, Arial, sans-serif"><b><big><font
                     color="#ffffff">Image <?php echo ( $offset + 1 ); ?> of <?php echo $results; ?></font></big></b></font><br>
           </td>
           <td valign="middle" width="20%">
+<?php if ( $offset < sizeof( $ids ) - 1 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?offset='.$next ?>"><img alt="next" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/nextbutton.png' ?>" height="40" width="120"></a>
+<?php } ?>
           </td>
           <td valign="top"><br>
           </td>

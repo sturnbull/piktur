@@ -74,16 +74,16 @@ if ( isset( $name ) and isset( $password_hash ) ) {
         header ( 'Location: '.$protocol.$_SERVER['SERVER_NAME'].'/albumview.php' );
     }
     else {
-        header ( 'Location: '.$protocol.$_SERVER['PHP_SELF'].'?failure=true' );
+        header ( 'Location: '.$protocol.$_SERVER['SERVER_NAME'].'/'.$_SERVER['PHP_SELF'].'?failure=true' );
     }
 }
 
 require 'header.php';
 ?>
-<?php if ( $failure ) { ?>
+<?php if ( $failure == 'true' ) { ?>
     <table border="0" cellpadding="2" cellspacing="2" width="100%">
       <tr>
-        <td class="notice">Invalid username or password!</td>
+        <td class="error">Invalid username or password!</td>
       </tr>
     </table>
 <?php } ?>
