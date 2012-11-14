@@ -1,12 +1,15 @@
 <?php
 require_once 'global.inc';
-if ( !isset ( $_SESSION['album_id'] ) ) {
-    $album_id = filter_input( INPUT_GET, 'album', FILTER_VALIDATE_INT, array( array("min_range"=>0) ) );
-    if ( isset( $album_id ) ) { $_SESSION['album_id'] = $album_id; };
+
+# require user to be logged in
+if ( $_SESSION['authenticated'] != 'true' ) {
+  header( 'Location: https://' . $_SERVER['SERVER_NAME'] . '/signin.php' );
 }
-else {
-    $album_id = $_SESSION['album_id'];
-}
+
+# Grab Album id
+$album_id = filter_input( INPUT_GET, 'album', FILTER_VALIDATE_INT, array( array("min_range"=>0) ) );
+$_SESSION['album_id'] = $album_id;
+
 $offset = filter_input( INPUT_GET, 'offset', FILTER_VALIDATE_INT, array( array("min_range"=>0) ) );
 if ( !isset( $offset ) ) { $offset = 0; };
 $i = 0;
@@ -19,6 +22,7 @@ $sql .= "JOIN `albums` ON `albums`.`album_id` = `album_images`.`album_id` WHERE 
 if ( $_SESSION['authenticated'] == 'true' ) { $sql .= " AND `albums`.`album_id` = $album_id;"; }
 
 if ( DEBUG ) {
+  echo "ALBUM_ID: $album_id<br>";
   echo "SQL: ".$sql.'<br>';
 }
 
@@ -114,7 +118,7 @@ require 'header.php';
         <tr>
           <td align="right" valign="top" width="10%">
 <?php if ( $offset > 0 ) { ?>
-            <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?offset='.$prev ?>">
+            <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$prev ?>">
               <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$files[$prev] ?>" alt="Previous Image" height="75" width="100"><br>
               <div class="copyight">Previous in Album</div>
             </a>
@@ -125,7 +129,7 @@ require 'header.php';
           </td>
           <td align="left" valign="top" width="10%">
 <?php if ( $offset < sizeof( $ids ) - 1 ) { ?>
-            <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?offset='.$next ?>">
+            <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$next ?>">
               <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$files[$next] ?>" alt="Next Image" height="75" width="100"><br>
               <div class="copyight">Next in Album</div>
             </a>
@@ -170,7 +174,7 @@ require 'header.php';
           </td>
           <td align="right" valign="middle" width="20%">
 <?php if ( $offset > 0 ) { ?>
-            <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?offset='.$prev ?>"><img alt="next" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/prevbutton.png' ?>" height="40" width="120"></a>
+            <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$prev ?>"><img alt="next" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/prevbutton.png' ?>" height="40" width="120"></a>
 <?php } ?>
           </td>
           <td align="center" valign="middle" width="10%"> <font
@@ -179,7 +183,7 @@ require 'header.php';
           </td>
           <td valign="middle" width="20%">
 <?php if ( $offset < sizeof( $ids ) - 1 ) { ?>
-            <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?offset='.$next ?>"><img alt="next" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/nextbutton.png' ?>" height="40" width="120"></a>
+            <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$next ?>"><img alt="next" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/nextbutton.png' ?>" height="40" width="120"></a>
 <?php } ?>
           </td>
           <td valign="top"><br>
