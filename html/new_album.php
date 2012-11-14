@@ -6,95 +6,94 @@ $name = filter_input( INPUT_POST, 'albumname', FILTER_VALIDATE_REGEXP, array( "o
 $description = filter_input( INPUT_POST, 'albumdescription', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[a-z0-9_]{1,64}$/" ) ) );
 $user = $_SESSION['name'];
 $id = $_SESSION['user_id'];
+$msg = '';
+$path = './pikturs/'. $user . '/' . $name;
+$perm = 'delete';
 
 # require user to be logged in
 if ( $_SESSION['authenticated'] != 'true' ) {
   header( 'Location: https://' . $_SERVER['SERVER_NAME'] . '/signin.php' );
 }
 
-if ($name and $description) {
-  # Create folder for the new album
-  $path = './pikturs/'. $user . '/' . $name;
-  if (is_dir( $path ) ) {
-    echo "The directory already exists.<br>";
-  }
-  else {
-    if ( !mkdir( $path, 0770, true ) ) {
-      die('Failed to create folder for user albums.');
-    }
-    echo "This would create ${path}.<br>";
-  }
-
-  # Prepare the MySQL update statement on the server
-  if ( !( $stmt = $db->prepare( "INSERT INTO `piktur`.`albums` ( `album_name`, `album_description`, `path`, `user_id` ) VALUES ( ?, ?, ?, ? );" ) ) ) {
-    die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
-  }
-  else {
-    # Bind the variables into the prepared statement
-    if ( !$stmt->bind_param( 'sssi', $name, $description, $path, $id ) ) {
-      die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
-    }
-    else {
-      # Execute the SQL command
-      if ( !$stmt->execute() ) {
-#        die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+if ($name) {
+  # if there is a name and no description, update then display error
+  if (!$description) {
+    $msg = 'Please enter a valid album description.<br>';
+  } else {
+    # check for an existing directory
+    if (is_dir( $path ) ) {
+      $msg = "The album already exists.<br>";
+    } else {
+      # create folder for the new album
+      if ( !mkdir( $path, 0770, true ) ) {
+        die('Failed to create folder for user albums.');
       }
-      else {
-        # Cleanup statement
-        $stmt->close();
+      echo "This would create ${path}.<br>";
+      
+      # Insert New Album into Album Table
+      # Prepare the MySQL update statement on the server
+      if ( !( $stmt = $db->prepare( "INSERT INTO `piktur`.`albums` ( `album_name`, `album_description`, `path`, `user_id` ) VALUES ( ?, ?, ?, ? );" ) ) ) {
+        die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
+      } else {
+        # Bind the variables into the prepared statement
+        if ( !$stmt->bind_param( 'sssi', $name, $description, $path, $id ) ) {
+          die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
+        } else {
+          # Execute the SQL command
+          if ( !$stmt->execute() ) {
+            die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+          } else {
+            # Cleanup statement
+            $stmt->close();
+            }
+          }
+      } # end of Album Table update
+      
+      # Get the newly created album id
+      # Prepare the MySQL update statement on the server
+      if ( !( $stmt = $db->prepare( "SELECT `albums`.`album_id` FROM `piktur`.`albums` WHERE `albums`.`album_name` = ? AND `albums`.`album_description` = ? AND `albums`.`user_id` = ?;" ) ) ) {
+        die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
+      } else {
+        # Bind the variables into the prepared statement
+        if ( !$stmt->bind_param( 'ssi', $name, $description, $id ) ) {
+          die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
+        } else {
+        # Execute the SQL command
+          if ( !$stmt->execute() ) {
+            die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+          } else {
+            # Bind results
+            $stmt->bind_result( $album_id  );
+            # Fetch the value
+            $stmt->fetch();
+            # Cleanup statement
+            $stmt->close();
+          }
         }
-      }
-  }
-
-  # Prepare the MySQL update statement on the server
-  if ( !( $stmt = $db->prepare( "SELECT `albums`.`album_id` FROM `piktur`.`albums` WHERE `albums`.`album_name` = ? AND `albums`.`album_description` = ? AND `albums`.`user_id` = ?;" ) ) ) {
-    die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
-  }
-  else {
-    # Bind the variables into the prepared statement
-    if ( !$stmt->bind_param( 'ssi', $name, $description, $id ) ) {
-      die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
-    }
-    else {
-    # Execute the SQL command
-      if ( !$stmt->execute() ) {
-        die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
-      }
-      else {
-        # Bind results
-        $stmt->bind_result( $album_id  );
-
-        # Fetch the value
-        $stmt->fetch();
-
-        # Cleanup statement
-        $stmt->close();
-      }
-    }
-  }
-
-  # Prepare the MySQL update statement on the server
-  if ( !( $stmt = $db->prepare( "INSERT INTO `piktur`.`permissions` ( `access_type`, `album_id`, `user_id` ) VALUES ( ?, ?, ? );" ) ) ) {
-    die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
-  }
-  else {
-    $perm = 'delete';
-    # Bind the variables into the prepared statement
-    if ( !$stmt->bind_param( 'sii', $perm, $album_id, $id ) ) {
-      die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
-    }
-    else {
-      # Execute the SQL command
-      if ( !$stmt->execute() ) {
-        die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
-      }
-      else {
-        # Cleanup statement
-        $stmt->close();
-      }
-    }
-  }  
-}
+      } # end of album id get
+      
+      # Add permissions to album
+      # Prepare the MySQL update statement on the server
+      if ( !( $stmt = $db->prepare( "INSERT INTO `piktur`.`permissions` ( `access_type`, `album_id`, `user_id` ) VALUES ( ?, ?, ? );" ) ) ) {
+        die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
+      } else {
+        # Bind the variables into the prepared statement
+        if ( !$stmt->bind_param( 'sii', $perm, $album_id, $id ) ) {
+          die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
+        } else {
+          # Execute the SQL command
+          if ( !$stmt->execute() ) {
+            die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+          } else {
+            # Cleanup statement
+            $stmt->close();
+          }
+        }
+      } # end of permissions update 
+    $msg = "The album was successfully created.<br>";
+    } # end of new album creation    
+  } # end of valid description
+} # end of valid name
 
 # debug block
 if ( DEBUG == TRUE ) {
@@ -126,7 +125,7 @@ require 'header.php';
       <table border="0" cellpadding="2" cellspacing="2" width="100%">
         <tbody>
           <tr>
-            <td colspan="1" rowspan="1" height="200" class="center_top">
+            <td colspan="1" rowspan="1" height="200" class="center_middle">
               <table border="0" cellpadding="2" cellspacing="4" width="100%">
                 <tbody>
                   <tr>
@@ -141,10 +140,12 @@ require 'header.php';
                       <input size="18" name="albumdescription" id="albumdescription" type="text"<?php if ( $name ) echo " value=\"$description\""; ?>>
                     </td>
                   </tr>
-
                 </tbody>
               </table>
             </td>
+          </tr>
+          <tr>
+            <td class="notice"><?php echo $msg ?></td>
           </tr>
           <tr>
             <td colspan="1" class="center_middle">
