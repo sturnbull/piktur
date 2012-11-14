@@ -18,6 +18,11 @@ $album_id = '';
 $album_name = '';
 $album_description = '';
 
+# require user to be logged in
+if ( $_SESSION['authenticated'] != 'true' ) {
+  header( 'Location: https://' . $_SERVER['SERVER_NAME'] . '/signin.php' );
+}
+
 # Only search if valid user_id variable exists
 if ( isset( $_SESSION['user_id'] ) ) {
     # Prepare the MySQL select statement on the server
@@ -47,7 +52,7 @@ if ( isset( $_SESSION['user_id'] ) ) {
                 while ( $stmt->fetch() ) {
                     # Review results
                     if ( DEBUG ) {
-                        echo "USER_ID[$i]: ".$_SESSION['user_id'].'<br>';
+                        echo "USER_ID: ".$_SESSION['user_id'].'<br>';
                         echo "ALBUM_ID[$i]: $album_id<br>";
                         echo "ALBUM_NAME[$i]: $album_name<br>";
                         echo "ALBUM_DESCRIPTION[$i]: $album_description<br>";
@@ -113,5 +118,6 @@ require 'header.php';
       </tr>
       <tr><td colspan="3"><hr size="3" width="100%"></td></tr>
     </table>
+    <?php require 'footer.php'; ?>
   </body>
 </html>

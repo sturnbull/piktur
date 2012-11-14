@@ -38,10 +38,10 @@ $results = $stmt->num_rows;
 $prev = max( ($offset - 1), 0 );
 $next = min( ($offset + 1), ( $results - 1 ) );
 if ( DEBUG ) {
-  echo "RESULTS: ".$results.'<br>';
-  echo "OFFSET: $offset<br>";
-  echo "PREVIOUS: $prev<br>";
-  echo "NEXT: $next<br>";
+#  echo "RESULTS: ".$results.'<br>';
+#  echo "OFFSET: $offset<br>";
+#  echo "PREVIOUS: $prev<br>";
+#  echo "NEXT: $next<br>";
 }
 
 # Fetch the values into arrays
