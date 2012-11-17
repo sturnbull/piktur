@@ -16,3 +16,7 @@ password.add( Validate.Format, { pattern: /(?=^[!-~]{8,64}$)(?=.*[a-z])(?=.*[A-Z
 
 var password2 = new LiveValidation( 'password2', { validMessage: "<" } );
 password2.add( Validate.Confirmation, { match: 'password', failureMessage: "Passwords don't match!" } );
+
+var oldpassword = new LiveValidation( 'oldpassword', { validMessage: "<" } );
+oldpassword.add( Validate.Format, { pattern: /(?=^[!-~]{8,64}$)(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=^.*[^\s].*$)(?=.*[\d]).*$/, failureMessage: "Invalid password!" } );
+
