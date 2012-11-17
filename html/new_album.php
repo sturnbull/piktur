@@ -3,7 +3,7 @@ require_once 'global.inc';
 
 # user input validation
 $name = filter_input( INPUT_POST, 'albumname', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[a-z0-9_]{1,64}$/" ) ) );
-$description = filter_input( INPUT_POST, 'albumdescription', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[a-z0-9_]{1,64}$/" ) ) );
+$description = filter_input( INPUT_POST, 'albumdescription', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[a-zA-Z0-9_ ,\.!]{1,255}$/" ) ) );
 $user = $_SESSION['name'];
 $id = $_SESSION['user_id'];
 $msg = '';
@@ -87,6 +87,7 @@ if ($name) {
           } else {
             # Cleanup statement
             $stmt->close();
+            header( 'Location: https://' . $_SERVER['SERVER_NAME'] . '/albumview.php' );
           }
         }
       } # end of permissions update 
@@ -116,7 +117,7 @@ require 'header.php';
     <table border="0" cellpadding="2" cellspacing="2" width="100%">
       <tbody>
         <tr>
-          <td class="notice">The account has been created.</td>
+          <td class="notice">The album has been created.</td>
         </tr>
       </tbody>
     </table>
