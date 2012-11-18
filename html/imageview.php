@@ -90,6 +90,7 @@ $stmt->bind_result( $image_id, $file, $image_description, $image_checksum );
 # Get total of records in the result set
 $stmt->store_result();
 $results = $stmt->num_rows;
+if ( $offset >= $results ) { $offset = 0; };
 $prev = max( ($offset - 1), 0 );
 $next = min( ($offset + 1), ( $results - 1 ) );
 if ( DEBUG ) {

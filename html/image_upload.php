@@ -120,7 +120,8 @@ elseif ( isset( $_POST['zsubmit'] ) ) {
   $description = filter_input( INPUT_POST, 'description', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[a-z0-9_ ]{1,255}$/" ) ) );
   $tags = filter_input( INPUT_POST, 'tags', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[a-z0-9_, ]{1,255}$/" ) ) );
   $tag_list = preg_split( "/,/", $tags );
-  $public = filter_input( INPUT_POST, 'public', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[a-z0-9_ ]{1,255}$/" ) ) );
+  $public = 0;
+  $public = filter_input( INPUT_POST, 'public', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^1$/" ) ) );
 
   if ( DEBUG ) {
       echo "DESCRIPTION: '$description'<br />";
@@ -130,12 +131,12 @@ elseif ( isset( $_POST['zsubmit'] ) ) {
 
   # Insert image data into image table
   # Prepare the MySQL insert statement on the server
-  if ( !( $stmt = $db->prepare( 'INSERT INTO `piktur`.`images` ( `file_name`, `description`, `image_checksum`, `public` ) VALUES ( ?, ?, ?, ?)' ) ) ) {
+  if ( !( $stmt = $db->prepare( 'INSERT INTO `piktur`.`images` ( `file_name`, `description`, `image_checksum`, `public` ) VALUES ( ?, ?, ?, ? )' ) ) ) {
       die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
   }
   else {
       # Bind the variables into the prepared statement
-      if ( !$stmt->bind_param( 'sssd', $_SESSION['image_name'], $description, $_SESSION['image_checksum'], $public ) ) {
+      if ( !$stmt->bind_param( 'sssb', $_SESSION['image_name'], $description, $_SESSION['image_checksum'], $public ) ) {
           die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
       }
       else {

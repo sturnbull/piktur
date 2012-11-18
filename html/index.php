@@ -2,7 +2,7 @@
 require_once 'global.inc';
 
 # Prepare the MySQL query statement to select publicly accessible images
-if ( !( $stmt = $db->prepare( "SELECT CONCAT( `albums`.`path`, '/', `images`.`file_name` ) AS file, `images`.`image_checksum` FROM `images` JOIN ( `albums`, `album_images` ) ON ( `images`.`image_id` = `album_images`.`image_id` AND `album_images`.`album_id` = `albums`.`album_id` ) WHERE `images`.`public` = 'public' ORDER BY RAND() LIMIT 1" ) ) ) {
+if ( !( $stmt = $db->prepare( "SELECT CONCAT( `albums`.`path`, '/', `images`.`file_name` ) AS file, `images`.`image_checksum` FROM `images` JOIN ( `albums`, `album_images` ) ON ( `images`.`image_id` = `album_images`.`image_id` AND `album_images`.`album_id` = `albums`.`album_id` ) WHERE `images`.`public` = '1' ORDER BY RAND() LIMIT 1" ) ) ) {
     die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
 }
 elseif ( !$stmt->execute() ) {
