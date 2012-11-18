@@ -90,22 +90,24 @@ require 'header.php';
     <form id="signin_form" name="signin_form" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post">
       <table border="0" cellpadding="2" cellspacing="2" width="100%">
         <tr>
-          <td class="formlabel">Username:</td>
-          <td class="forminput">
+          <td class="formlabel" width="50%">Username:</td>
+          <td class="forminput" width="50%">
             <input size="18" name="username" id="username" type="text"<?php if ( $name ) echo " value=\"$name\""; ?>>
           </td>
         </tr>
         <tr>
-          <td class="formlabel">Password:</td>
-          <td class="forminput">
+          <td class="formlabel" width="50%">Password:</td>
+          <td class="forminput" width="50%">
             <input size="18" name="password" id="password" type="password"<?php if ( $password ) echo " value=\"$password\""; ?>>
           </td>
         </tr>
-      </table>
-      <table border="0" cellpadding="2" cellspacing="2" width="100%">
         <tr>
-          <td class="center_middle">
+          <td class="center_middle" colspan="2">
             <input type="image" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/signinbutton.png" height="45" width="125" border="0" alt="Signin Button">
+          </td>
+        </tr>
+          <td class="center_middle" colspan="2">
+            <a href="<?php echo 'https://' . $_SERVER['SERVER_NAME'] ?>/forgot_password.php">[Forgot Password]</a>
           </td>
         </tr>
       </table>

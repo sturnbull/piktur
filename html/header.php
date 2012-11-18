@@ -26,3 +26,18 @@
       </tr>
     </table>
     <hr size="3" width="100%">
+<?php if ( $_SESSION['authenticated'] == 'true' ) { ?>
+    <table border="0" cellpadding="2" cellspacing="2" width="100%">
+      <tr>
+        <td class="left_middle">
+          <a href="<?php echo 'https://' . $_SERVER['SERVER_NAME'] ?>">[ Random Image ]</a>
+          <a href="<?php echo 'https://' . $_SERVER['SERVER_NAME'] ?>/albumview.php">[ Album View ]</a>
+        </td>
+        <td class="right_middle">
+          <a href="<?php echo 'https://' . $_SERVER['SERVER_NAME'] ?>/admin.php">[ Manage My Account ]</a>
+          <a href="<?php echo 'https://' . $_SERVER['SERVER_NAME'] ?>/signout.php">[ Signout ]</a>
+        </td>
+      </tr>
+    </table>
+    <hr size="3" width="100%">
+<?php } ?>
