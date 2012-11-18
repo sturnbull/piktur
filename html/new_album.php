@@ -87,7 +87,7 @@ if ($name) {
           } else {
             # Cleanup statement
             $stmt->close();
-            header( 'Location: https://' . $_SERVER['SERVER_NAME'] . '/albumview.php' );
+            header( 'Location: https://' . $_SERVER['SERVER_NAME'] . '/imageview.php?album='.$album_id );
           }
         }
       } # end of permissions update 
@@ -111,17 +111,7 @@ if ( DEBUG == TRUE ) {
 
 require 'header.php';
 ?>
-
 <html>
-<?php if ( $confirm ) { ?>
-    <table border="0" cellpadding="2" cellspacing="2" width="100%">
-      <tbody>
-        <tr>
-          <td class="notice">The album has been created.</td>
-        </tr>
-      </tbody>
-    </table>
-<?php } else { ?>
     <form id="create_album_form" name="create_album_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . '/' . $_SERVER['PHP_SELF'] ?>" method="post">
       <table border="0" cellpadding="2" cellspacing="2" width="100%">
         <tbody>
@@ -150,13 +140,12 @@ require 'header.php';
           </tr>
           <tr>
             <td colspan="1" class="center_middle">
-              <input type="image" src="<?php echo  $protocol . $_SERVER['SERVER_NAME'] ?>/img/newbutton.png" height="45" width="125" border="0" alt="Create Album Button">
+              <input type="image" src="<?php echo  $protocol . $_SERVER['SERVER_NAME'] ?>/img/newbutton.png" border="0" alt="Create Album Button">
             </td>
           </tr>
         </tbody>
       </table>
     </form>
-<?php } ?>
 <?php require 'footer.php'; ?>
     <script type="text/javascript" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/js/livevalidation_createalbum.js"></script>
   </body>

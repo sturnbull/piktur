@@ -62,7 +62,7 @@ if ( isset( $_SESSION['user_id'] ) ) {
                     $names[$i] = $album_name;
                     $descriptions[$i] = $album_description;
                     $i++;
-		}
+		            }
 
                 # Cleanup statement
                 $stmt->close();

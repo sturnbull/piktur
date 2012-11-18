@@ -189,7 +189,7 @@ require 'header.php';
     <table border="1" cellpadding="2" cellspacing="2" width="100%">
       <tbody>
         <tr>
-          <td valign="top"><br></td>
+          <td class="center_top"><br></td>
           <td colspan="3" rowspan="1" class="notice">
             <form action="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'] ?>" method="GET">
               Album: <select name="album" id="album" onchange="this.form.submit();">
@@ -199,15 +199,15 @@ require 'header.php';
               </select>
             </form>
           </td>
-          <td><br /></td>
+          <td class="center_top"><br></td>
         </tr>
         <tr>
-          <td><br /></td>
+          <td class="center_top"><br></td>
           <td colspan="3" rowspan="1" class="notice"><?php echo $descriptions[$offset]; ?></td>
-          <td><br /></td>
+          <td class="center_top"><br></td>
         </tr>
         <tr>
-          <td align="right" valign="top" width="10%">
+          <td width="10%" class="right_top">
 <?php if ( $offset > 0 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$prev ?>">
               <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$files[$prev] ?>" alt="Previous Image" height="75" width="100"><br>
@@ -215,10 +215,15 @@ require 'header.php';
             </a>
 <?php } ?>
           </td>
-          <td colspan="3" rowspan="1" align="center" height="200" valign="top" width="650">
+          <td colspan="3" rowspan="1" height="200" width="650" class="center_middle">
+<?php if ( $results > 0 ) { ?>
             <img alt="<?php echo $descriptions[$offset] ?>" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$files[$offset] ?>" height="449" width="600"><br>
+<?php }
+else {?>
+            <div>You have not yet uploaded any pictures.<br />Please click <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/image_upload.php' ?>">here</a> or the [New] button below.</div>
+<?php } ?>
           </td>
-          <td align="left" valign="top" width="10%">
+          <td width="10%" class="left_top">
 <?php if ( $offset < sizeof( $ids ) - 1 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$next ?>">
               <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$files[$next] ?>" alt="Next Image" height="75" width="100"><br>
@@ -228,16 +233,18 @@ require 'header.php';
           </td>
         </tr>
         <tr>
-          <td align="right" valign="top">
+          <td class="right_top">
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/image_upload.php' ?>"><img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/newbutton.png' ?>" height="40" width="87" alt="newimage"></a><br />
           </td>
           <td colspan="3" rowspan="1" class="tag_list"><?php echo $tags[$offset]; ?></td>
-          <td valign="top">
+          <td valign="left_top">
+<?php if ( $results > 0 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_image.php?image='.$ids[$offset] ?>"><img alt="delete" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/deletebutton.png' ?>" height="40" width="115"></a><br />
+<?php } ?>
           </td>
         </tr>
         <tr>
-          <td colspan="5" rowspan="1" valign="top"><hr size="3" width="100%"></td>
+          <td colspan="5" rowspan="1" class="center_top"><hr size="3" width="100%"></td>
         </tr>
         <tr>
           <form id="add_tags" name="add_tags" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$offset ?>" method="post" enctype="multipart/form-data">
@@ -249,33 +256,31 @@ require 'header.php';
           </form>
         </tr>
         <tr>
-          <td colspan="5" rowspan="1" valign="top">
-            <hr size="3" width="100%"></td>
+          <td colspan="5" rowspan="1" class="center_top"><hr size="3" width="100%"></td>
         </tr>
         <tr>
-          <td valign="top"><br>
-          </td>
-          <td align="right" valign="middle" width="20%">
+          <td class="center_top"><br /></td>
+          <td width="20%" class="middle_right">
 <?php if ( $offset > 0 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$prev ?>"><img alt="next" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/prevbutton.png' ?>" height="40" width="120"></a>
 <?php } ?>
           </td>
           <td width="10%" class="center_middle">
+<?php if ( $results > 0 ) { ?>
             <div>Image <?php echo ( $offset + 1 ); ?> of <?php echo $results; ?></div>
+<?php } ?>
           </td>
           <td width="20%" class="center_middle">
 <?php if ( $offset < sizeof( $ids ) - 1 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$next ?>"><img alt="next" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/nextbutton.png' ?>" height="40" width="120"></a>
 <?php } ?>
           </td>
-          <td valign="top"><br>
-          </td>
+          <td class="center_top"><br /></td>
         </tr>
         <tr>
-          <td colspan="5" rowspan="1" valign="top"><hr size="3" width="100%"></td>
+          <td colspan="5" rowspan="1" class="center_top"><hr size="3" width="100%"></td>
         </tr>
       </tbody>
     </table>
   </body>
 </html>
-

@@ -108,6 +108,11 @@ require 'header.php';
             <input type="image" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/signinbutton.png" height="45" width="125" border="0" alt="Signin Button">
           </td>
         </tr>
+        <tr>
+          <td class="center_middle">
+            <a href="<?php echo 'https://' . $_SERVER['SERVER_NAME'] ?>/forgot_password.php">[Forgot Password]</a>
+          </td>
+        </tr>
       </table>
     </form>
 <?php require 'footer.php'; ?>
