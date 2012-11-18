@@ -99,38 +99,38 @@ require 'header.php';
               <table border="0" cellpadding="2" cellspacing="4" width="100%">
                 <tbody>
                   <tr>
-                    <td class="formlabel">Username:</td>
-                    <td class="forminput">
+                    <td class="formlabel" width="50%">Username:</td>
+                    <td class="forminput" width="50%">
                       <input size="18" name="username" id="username" type="text"<?php if ( $name ) echo " value=\"$name\""; ?>>
                     </td>
                   </tr>
                   <tr>
-                    <td class="formlabel">Email:</td>
-                    <td class="forminput">
+                    <td class="formlabel" width="50%">Email:</td>
+                    <td class="forminput" width="50%">
                       <input size="18" name="email" id="email" type="text"<?php if ( $email_address ) echo " value=\"$email_address\""; ?>>
                     </td>
                   </tr>
                   <tr>
-                    <td class="formlabel">Confirm Email:</td>
-                    <td class="forminput">
+                    <td class="formlabel" width="50%">Confirm Email:</td>
+                    <td class="forminput" width="50%">
                       <input size="18" name="email2" id="email2" type="text"<?php if ( $email_address ) echo " value=\"$email_address\""; ?>>
                     </td>
                   </tr>
                   <tr>
-                    <td class="formlabel">Password:</td>
-                    <td class="forminput">
+                    <td class="formlabel" width="50%">Password:</td>
+                    <td class="forminput" width="50%">
                       <input size="18" name="password" id="password" type="password"<?php if ( $password ) echo " value=\"$password\""; ?>>
                     </td>
                   </tr>
                   <tr>
-                    <td class="formlabel">Confirm Password:</td>
-                    <td class="forminput">
+                    <td class="formlabel" width="50%">Confirm Password:</td>
+                    <td class="forminput" width="50%">
                       <input size="18" name="password2" id="password2" type="password"<?php if ( $password ) echo " value=\"$password\""; ?>>
                     </td>
                   </tr>
                   <tr>
-                    <td class="formlabel"><img id="captcha" src="/securimage/securimage_show.php" alt="CAPTCHA Image" /></td>
-                    <td class="left_middle">
+                    <td class="formlabel" width="50%"><img id="captcha" src="/securimage/securimage_show.php" alt="CAPTCHA Image" /></td>
+                    <td class="left_middle" width="50%">
                       <input type="text" name="captcha_code" size="18" maxlength="6" />
                       <a href="#" onclick="document.getElementById('captcha').src = '/securimage/securimage_show.php?' + Math.random(); return false">[ Different Image ]</a>
                     </td>
