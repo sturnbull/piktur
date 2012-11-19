@@ -1,4 +1,10 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<?php
+  echo $_SERVER['PHP_SELF'];
+  if ( $_SERVER['PHP_SELF'] != '/search.php' ) {
+    unset( $_SESSION['key'] );
+  }
+?>
 <html>
   <head>
     <meta content="text/html; charset=ISO-8859-1" http-equiv="Content-Type">
@@ -6,6 +12,7 @@
     <link rel="stylesheet" type="text/css" href="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/css/livevalidation.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/css/piktur.css" />
     <script type="text/javascript" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/js/livevalidation_standalone.compressed.js"></script>
+    <script type="text/javascript" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/js/livevalidation_search.js"></script>
   </head>
   <body>
     <table border="0" cellpadding="2" cellspacing="2" width="100%">
@@ -19,9 +26,9 @@
 <?php } ?>
         <td class="searchlabel">Search:<input name="searchterm" id="searchterm"></td>
         <td class="searchinput">
-          <form id="search_form" name="search_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/search.php" method="post">
-            <input type="image" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/search.png" alt="Search Button" height="24" width="24">
-          </form>    
+        <form id="search_form" name="search_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/search.php" method="post">            
+          <input type="image" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/img/search.png" alt="Search Button" height="24" width="24">
+        </form>    
         </td>
       </tr>
     </table>
