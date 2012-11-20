@@ -133,7 +133,7 @@
         </tr>
         <tr>
           <td colspan="1" class="center_middle">
-            <input type="image" src="<?php echo  $protocol . $_SERVER['SERVER_NAME'] ?>/img/submitbutton.png" height="45" width="125" border="0" alt="Signup Button">
+            <input type="image" src="<?php echo  $protocol . $_SERVER['SERVER_NAME'] ?>/img/submitbutton.png" height="45" width="125" border="0" alt="Submit Button">
           </td>
         </tr>
       </tbody>
