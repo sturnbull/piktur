@@ -11,12 +11,18 @@
   
   # Grab keyword
   $image_id = $_GET['image'];
-  $_SESSION['image_id'] = $image_id;
+  if ( !isset( $_POST['confirm_delete'] ) ) {
+    $_SESSION['image_id'] = $image_id;
+  } elseif ( $_POST['confirm_delete'] == 'Yes' ) {
+    $confirm = TRUE;
+    }
 
   # Review results
   if ( DEBUG ) {
-    echo "IMAGE_ID: ".$image_id.'<br>';
+    echo "IMAGE_ID: ".$_SESSION['image_id'].'<br>';
+    echo "Session IMAGE_ID: ".$image_id.'<br>';
     echo "USER_ID: ".$_SESSION['user_id'].'<br>';
+    echo "Confirm_Delete: ".$_POST['confirm_delete'].'<br>';
   }
   
   #query database for image and check permissions
@@ -55,6 +61,10 @@
               }
           }
       }
+      # delete image
+      if ( $confirm) {
+        # need code to delete the image here.
+      }
   }
 ?>
 
@@ -64,7 +74,26 @@
   </header
   <body>
     <table border="1" cellpadding="2" cellspacing="2" width="100%">
-      <tbody>   
+      <tbody>
+        <tr>
+          <td class="center_top"><br></td>
+          <td colspan="3" rowspan="1" class="notice"><?php echo $image_description; ?></td>
+          <td class="center_top"><br></td>
+        </tr>
+        <tr>
+          <td colspan="3" rowspan="1" height="200" width="650" class="center_middle">
+            <img alt="<?php echo $image_description ?>" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$file ?>" height="449" width="600"><br>
+          </td>
+        </tr>        
+        <tr>
+          <form id="confirm_delete_form" name="confirm_delete_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?image=' . $_SESSION['image_id'] ?>" method="post">
+            <td class="formlabel">Confirm Delete:</td>
+            <td class="forminput">
+            <input size="18" name="confirm_delete" id="confirm_delete" type="checkbox" value="Yes">            
+              <input type="image" src="<?php echo  $protocol . $_SERVER['SERVER_NAME'] ?>/img/deletebutton.png" border="0" alt="Confirm Delete Button">
+            </td>            
+          </form>
+        </tr>
       </tbody>
     </table>
     <table border="1" cellpadding="2" cellspacing="2" width="100%">
