@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <?php
-  echo $_SERVER['PHP_SELF'];
   if ( $_SERVER['PHP_SELF'] != '/search.php' ) {
     unset( $_SESSION['key'] );
   }
