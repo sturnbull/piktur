@@ -14,7 +14,7 @@ defined( 'DB_HOST' ) or define( 'DB_HOST', 'piktur2.poly.edu' );
 defined( 'DB_PORT' ) or define( 'DB_PORT', '3306' );
 defined( 'DB_USER' ) or define( 'DB_USER', 'ssluser' );
 defined( 'DB_PASS' ) or define( 'DB_PASS', 'piktur100' );
-defined( 'DEBUG' ) or define( 'DEBUG', TRUE );
+defined( 'DEBUG' ) or define( 'DEBUG', FALSE );
 
 $protocol = ( isset( $_SERVER['HTTPS'] ) and $_SERVER['HTTPS'] == 'on' ) ? 'https://' : 'http://';
 
