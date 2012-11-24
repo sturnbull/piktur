@@ -8,6 +8,7 @@
   
   # prepare variables
   $msg = '';
+  $deleted = FALSE;
   
   # Grab keyword
   $image_id = $_GET['image'];
@@ -48,6 +49,11 @@
             die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
             } else {
                 # Bind results
+                $stmt->store_result();
+                $results = $stmt->num_rows;
+                if ( $results != '1' ) {
+                  $msg = 'You are unable to delete this image';
+                }
                 $stmt->bind_result( $file, $image_description, $image_checksum );
                 
                 # Fetch the values
@@ -57,14 +63,62 @@
                   echo "FILE: $file<br>";
                   echo "IMAGE_CHECKSUM: $image_checksum<br>";
                   echo "IMAGE_DESCRIPTION: $image_description<br>";
+                  echo "RESULTS: $results<br>";
+                  echo "PROTOCOL: $protocol<br>";
                 }   
               }
           }
       }
-      # delete image
-      if ( $confirm) {
-        # need code to delete the image here.
-      }
+      # delete image code
+      if ( $confirm AND $results == '1') {
+        # delete file
+        if ( !is_dir( "$file" ) ) {
+          unlink( $file );  
+        }
+        # remove tags
+        if ( !( $stmt = $db->prepare( "DELETE FROM `piktur`.`tags` WHERE `piktur`.`tags`.`image_id`=?;" ) ) ) {
+          die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
+        } else {
+          if ( !$stmt->bind_param( 'i', $_SESSION['image_id'] ) ) {
+            die( 'Binding parameters failed: (' . $tag_stmt->errno . ') ' . $tag_stmt->error );
+          } else {
+            if ( !$stmt->execute() ) {
+              die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+            } else {
+              $stmt->close();
+            }
+          }
+        }
+        # update image table
+        if ( !( $stmt = $db->prepare( "DELETE FROM `piktur`.`images` WHERE `piktur`.`images`.`image_id`=?;" ) ) ) {
+          die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
+        } else {
+          if ( !$stmt->bind_param( 'i', $_SESSION['image_id'] ) ) {
+            die( 'Binding parameters failed: (' . $tag_stmt->errno . ') ' . $tag_stmt->error );
+          } else {
+            if ( !$stmt->execute() ) {
+              die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+            } else {
+              $stmt->close();
+            }
+          }
+        }
+        # update album_images table
+        if ( !( $stmt = $db->prepare( "DELETE FROM `piktur`.`album_images` WHERE `piktur`.`album_images`.`image_id`=?;" ) ) ) {
+          die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
+        } else {
+          if ( !$stmt->bind_param( 'i', $_SESSION['image_id'] ) ) {
+            die( 'Binding parameters failed: (' . $tag_stmt->errno . ') ' . $tag_stmt->error );
+          } else {
+            if ( !$stmt->execute() ) {
+              die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+            } else {
+              $stmt->close();
+            }
+          }
+        }
+      $msg = 'The image has been deleted';
+      } #end of delete image code
   }
 ?>
 
@@ -73,29 +127,31 @@
     <?php require 'header.php'; ?>
   </header
   <body>
-    <table border="1" cellpadding="2" cellspacing="2" width="100%">
-      <tbody>
-        <tr>
-          <td class="center_top"><br></td>
-          <td colspan="3" rowspan="1" class="notice"><?php echo $image_description; ?></td>
-          <td class="center_top"><br></td>
-        </tr>
-        <tr>
-          <td colspan="3" rowspan="1" height="200" width="650" class="center_middle">
-            <img alt="<?php echo $image_description ?>" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$file ?>" height="449" width="600"><br>
-          </td>
-        </tr>        
-        <tr>
-          <form id="confirm_delete_form" name="confirm_delete_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?image=' . $_SESSION['image_id'] ?>" method="post">
-            <td class="formlabel">Confirm Delete:</td>
-            <td class="forminput">
-            <input size="18" name="confirm_delete" id="confirm_delete" type="checkbox" value="Yes">            
-              <input type="image" src="<?php echo  $protocol . $_SERVER['SERVER_NAME'] ?>/img/deletebutton.png" border="0" alt="Confirm Delete Button">
-            </td>            
-          </form>
-        </tr>
-      </tbody>
-    </table>
+    <?php if ( !$confirm AND $results == '1' ) { ?>
+      <table border="1" cellpadding="2" cellspacing="2" width="100%">
+        <tbody>
+          <tr>
+            <td class="center_top"><br></td>
+            <td colspan="3" rowspan="1" class="notice"><?php echo $image_description; ?></td>
+            <td class="center_top"><br></td>
+          </tr>
+          <tr>
+            <td colspan="3" rowspan="1" height="200" width="650" class="center_middle">
+              <img alt="<?php echo $image_description ?>" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$file ?>" height="449" width="600"><br>
+            </td>
+          </tr>        
+          <tr>
+            <form id="confirm_delete_form" name="confirm_delete_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?image=' . $_SESSION['image_id'] ?>" method="post">
+              <td class="formlabel">Confirm Delete:</td>
+              <td class="forminput">
+              <input size="18" name="confirm_delete" id="confirm_delete" type="checkbox" value="Yes">            
+                <input type="image" src="<?php echo  $protocol . $_SERVER['SERVER_NAME'] ?>/img/deletebutton.png" border="0" alt="Confirm Delete Button">
+              </td>            
+            </form>
+          </tr>
+        </tbody>
+      </table>
+    <?php } ?>
     <table border="1" cellpadding="2" cellspacing="2" width="100%">
       <tbody>
         <tr>
