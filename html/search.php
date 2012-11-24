@@ -32,7 +32,7 @@
     $sql .= "OR `piktur`.`albums`.`album_id` IN ( ";
     $sql .= "SELECT `piktur`.`albums`.`album_id` FROM `piktur`.`albums` ";
     $sql .= "JOIN `piktur`.`permissions` ON `piktur`.`albums`.`album_id`=`piktur`.`permissions`.`album_id` ";
-    $sql .= "WHERE `piktur`.`permissions`.`user_id` = '30' ";
+    $sql .= "WHERE `piktur`.`permissions`.`user_id` = ? ";
     $sql .= "AND `piktur`.`permissions`.`access_type` IN ( 'view', 'edit', 'delete' ) ) )";
     $sql .= "AND `piktur`.`tags`.`tag_description` LIKE ?";
      
@@ -41,7 +41,7 @@
     } else {
         # Execute the SQL command
         # Bind the variables into the prepared statement
-        if ( !$stmt->bind_param( 's', $_SESSION['key'] ) ) {
+        if ( !$stmt->bind_param( 'is',  $_SESSION['user_id'], $_SESSION['key'] ) ) {
           die( 'Binding parameters failed: (' . $tag_stmt->errno . ') ' . $tag_stmt->error );
         } else {  
             if ( !$stmt->execute() ) {
@@ -123,6 +123,7 @@
     echo "Per Page: ".$albums_per_page.'<br />';
     echo "Submitted Keyword: ".$keyword.'<br />';    
     echo "Stored Key: ".$_SESSION['key'].'<br />';
+    echo "USER ID: ".$_SESSION['user_id'].'<br />';
   }
 ?>
 <html>
@@ -134,11 +135,9 @@
       <table border="0" cellpadding="2" cellspacing="2" width="100%">
         <tbody>
           <tr>
-            <td class="formlabel">Keyword:</td>
-            <td class="forminput">
+            <td class="formlabel" width="50%">Keyword:</td>
+            <td class="forminput" width="50%">
               <input size="18" name="keyword" id="keyword" type="text"<?php if ( $name ) echo " value=\"$keyword\""; ?>>
-            </td>
-            <td colspan="1" class="center_middle">
               <input type="image" src="<?php echo  $protocol . $_SERVER['SERVER_NAME'] ?>/img/search.png" border="0" alt="Search" height="24" width="24">
             </td>
           </tr>
