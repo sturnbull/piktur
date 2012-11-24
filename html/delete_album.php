@@ -49,7 +49,7 @@ if ( isset( $_SESSION['user_id'] ) ) {
          
 		 
 		      # Review results
-          if ( !DEBUG ) {
+          if ( DEBUG ) {
             echo "USER_ID: ".$_SESSION['user_id'].'<br />';
             echo "ALBUM_ID[$i]: $album_id<br />";
             echo "ALBUM_NAME[$i]: $album_name<br />";
