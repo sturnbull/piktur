@@ -10,7 +10,7 @@ $password = filter_input( INPUT_POST, 'password', FILTER_VALIDATE_REGEXP, array(
 if ( $password ) $password_hash =  hash( 'sha512', $password );
 $confirm = filter_input( INPUT_GET, 'confirm', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^true$/" ) ) );
 $securimage = new Securimage();
-
+$msg = '';
 
 if ( DEBUG ) {
     echo "USERNAME: '$name'<br>";
@@ -19,14 +19,24 @@ if ( DEBUG ) {
     if ( $password ) echo "PASSWORD HASH: '$password_hash'<br>";
 }
 
-#verify that the captcha was correct
-if ( ! empty( $_POST ) && ( $securimage->check( $_POST['captcha_code'] ) == true ) ) {
-    // the code was incorrect
-    // you should handle the error so that the form processor doesn't continue
-    // or you can use the following code if there is no validation or you do not know how
-    echo "The security code entered was incorrect.<br /><br />";
-  
+#process the form
+if ( !empty( $_POST ) ) {
+    if ( $securimage->check( $_POST['captcha_code'] ) == FALSE ) {
+    # the code was incorrect
+    $msg .= "The security code entered was incorrect.<br>";
+    } else { 
     # Only insert user if valid variabls exist
+    if ( !$name) {
+    # bad or empty username
+      $msg .= "Invalid username, your username may only contain characters, numbers, or underscores.<br>";
+    }
+    if ( !$email_address ) {
+      $msg .= "Invalid email address.<br>";
+    }
+    if ( !$password ) {
+      $msg .= "Invalid password, your password must be at least 8 characters consisting of at least 1 lowercase character, 1 upercase character, and 1 special character.<br>";
+    }
+    # 
     if ( $name and $email_address and $password ) {
         # Prepare the MySQL insert statement on the server
         if ( !( $stmt = $db->prepare( 'INSERT INTO `piktur`.`users` ( `name`, `email_address`, `password_hash` ) VALUES ( ?, ?, ? )' ) ) ) {
@@ -79,6 +89,7 @@ if ( ! empty( $_POST ) && ( $securimage->check( $_POST['captcha_code'] ) == true
         }
     }
 }
+}
 
 require 'header.php';
 ?>
@@ -91,7 +102,7 @@ require 'header.php';
       </tbody>
     </table>
 <?php } else { ?>
-    <form id="add_user_form" name="add_user_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . '/' . $_SERVER['PHP_SELF'] ?>" method="post">
+    <form id="add_user_form" name="add_user_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] ?>" method="post">
       <table border="0" cellpadding="2" cellspacing="2" width="100%">
         <tbody>
           <tr>
@@ -147,8 +158,17 @@ require 'header.php';
         </tbody>
       </table>
     </form>
+    <table border="1" cellpadding="2" cellspacing="2" width="100%">
+      <tbody>
+        <tr>
+          <td class="notice"><?php echo $msg ?></td>
+        </tr>
+      </tbody>
+    </table>
 <?php } ?>
-<?php require 'footer.php'; ?>
     <script type="text/javascript" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/js/livevalidation_signup.js"></script>
   </body>
+  <footer>
+    <?php require 'footer.php'; ?>
+  </footer>
 </html>
