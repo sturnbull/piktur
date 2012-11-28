@@ -2,7 +2,7 @@
 require_once 'global.inc';
 
 $email_address = filter_input( INPUT_GET, 'email', FILTER_VALIDATE_EMAIL );
-$hash = $_GET['key'];
+$hash = filter_input( INPUT_GET, 'key', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[0-9a-f]{128}$/" ) ) );
 $message = 'Your account was not activated. Please contact the website administrator for assistance.';
 $album_id = '';
 $album_name = 'default';
@@ -13,12 +13,12 @@ $name = '';
 
 if ( $email_address and $hash ) {
     # Prepare the MySQL select statement on the server
-    if ( !( $stmt = $db->prepare( 'SELECT `user_id`, `name` FROM `piktur`.`users` WHERE `email_address` = ?' ) ) ) {
+    if ( !( $stmt = $db->prepare( 'SELECT `user_id`, `name` FROM `piktur`.`users` WHERE `email_address` = ? AND `password_hash` = ?' ) ) ) {
         die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
     }
     else {
         # Bind the variables into the prepared statement
-        if ( !$stmt->bind_param( 's', $email_address ) ) {
+        if ( !$stmt->bind_param( 'ss', $email_address, $hash ) ) {
             die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
         }
 	else {
