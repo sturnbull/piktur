@@ -111,25 +111,27 @@ while ( $stmt->fetch() ) {
       $tags = filter_input( INPUT_POST, 'tags', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[a-zA-Z0-9_, ]{1,255}$/" ) ) );
       $tag_list = preg_split( "/,/", $tags );
 
-      # Insert entries into tags table
-      foreach ( $tag_list as &$tag ) {
-        if ( !( $stmt = $db->prepare( 'INSERT INTO `piktur`.`tags` ( `image_id`, `tag_description` ) VALUES ( ?, ? )' ) ) ) {
-          die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
-        }
-        else {
-          # Bind the variables into the prepared statement
-          if ( !$stmt->bind_param( 'is', $image_id, $tag ) ) {
-            die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error ); }
+      if ( sizeof( $tag_list ) > 0 ) {
+        # Insert entries into tags table
+        foreach ( $tag_list as &$tag ) {
+          if ( !( $stmt = $db->prepare( 'INSERT INTO `piktur`.`tags` ( `image_id`, `tag_description` ) VALUES ( ?, ? )' ) ) ) {
+            die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
+          }
           else {
-            # Execute the SQL command
-            if ( !$stmt->execute() ) {
-              die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
-            }
-            # Cleanup statement
-            $stmt->close();
+            # Bind the variables into the prepared statement
+            if ( !$stmt->bind_param( 'is', $image_id, $tag ) ) {
+              die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error ); }
+            else {
+              # Execute the SQL command
+              if ( !$stmt->execute() ) {
+                die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+              }
+              # Cleanup statement
+              $stmt->close();
 
-            # Redirect back to album page
-            header ( 'Location: '.$protocol.$_SERVER['SERVER_NAME'].'/imageview.php?album='.$_SESSION['album_id'].'&offset='.$offset );
+              # Redirect back to album page
+              header ( 'Location: '.$protocol.$_SERVER['SERVER_NAME'].'/imageview.php?album='.$_SESSION['album_id'].'&offset='.$offset );
+            }
           }
         }
       }
