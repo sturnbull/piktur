@@ -107,12 +107,12 @@ while ( $stmt->fetch() ) {
   # If suplied offset equals current offset
   if ( $offset == $i ) {
     # Add new tags
-    if ( isset($_POST['tag_submit'] ) ) {
-      $tags = filter_input( INPUT_POST, 'tags', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[a-z0-9_, ]{1,255}$/" ) ) );
+    if ( isset( $_POST['tag_submit'] ) ) {
+      $tags = filter_input( INPUT_POST, 'tags', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[a-zA-Z0-9_, ]{1,255}$/" ) ) );
       $tag_list = preg_split( "/,/", $tags );
 
       # Insert entries into tags table
-      foreach ($tag_list as &$tag) {
+      foreach ( $tag_list as &$tag ) {
         if ( !( $stmt = $db->prepare( 'INSERT INTO `piktur`.`tags` ( `image_id`, `tag_description` ) VALUES ( ?, ? )' ) ) ) {
           die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
         }
