@@ -81,7 +81,7 @@
 ?>
 
 <body>
-  <form id="update_user_form" name="update_user_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . '/' . $_SERVER['PHP_SELF'] ?>" method="post">
+  <form id="update_user_form" name="update_user_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] ?>" method="post">
     <table border="0" cellpadding="2" cellspacing="2" width="100%">
       <tbody>
         <tr>
