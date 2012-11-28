@@ -61,13 +61,13 @@
                 echo "NEXT: $next<br />";
               }          
               # Bind results
-              $stmt->bind_result( $images_id, $file, $image_description, $image_checksum );
+              $stmt->bind_result( $image_id, $file, $image_description, $image_checksum );
 
               # Fetch the values into arrays
               $i = 0;
               while ( $stmt->fetch() ) {
                 # Prepare the MySQL select statement on the server
-                if ( !( $tag_stmt = $db->prepare( "SELECT `tags`.`tag_description` FROM `tags` WHERE `image_id` = ?" ) ) ) {
+                if ( !( $tag_stmt = $db->prepare( "SELECT `piktur`.`tags`.`tag_description` FROM `piktur`.`tags` WHERE `piktur`.`tags`.`image_id` = ?" ) ) ) {
                   die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
                 } else {
                   # Bind the variables into the prepared statement
@@ -80,7 +80,6 @@
                       } else {
                           # Bind results
                           $tag_stmt->bind_result( $tag );
-
                           # Fetch the values into array
                           $j=0;
                           $tag_list = array();
@@ -95,6 +94,13 @@
                         }
                     }
                 }
+
+                $ids[$i] = $image_id;
+                $files[$i] = $file;
+                $checksums[$i] = $image_checksum;
+                $descriptions[$i] = $image_description;
+                $tags[$i] = implode( ', ', $tag_list );
+                $i++;
               
                 # Review results
                 if ( DEBUG ) {
@@ -102,16 +108,10 @@
                   echo "FILE[$i]: $file<br>";
                   echo "IMAGE_CHECKSUM[$i]: $image_checksum<br>";
                   echo "IMAGE_DESCRIPTION[$i]: $image_description<br>";
+                  echo "TAGS[$i]: $tags[$i]<br>";
                 }
-                
-                $ids[$i] = $image_id;
-                $files[$i] = $file;
-                $checksums[$i] = $image_checksum;
-                $descriptions[$i] = $image_description;
-                $tags[$i] = implode( ', ', $tag_list );
-                $i++;
-              }
-          }
+}          
+}
           unset( $i );
       } #bind worked
     } #valid session and a keyword submitted
@@ -131,7 +131,7 @@
     <?php require 'header.php'; ?>
   </header
   <body>
-    <form id="search_form" name="search_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . '/' . $_SERVER['PHP_SELF'] ?>" method="post">
+    <form id="search_form" name="search_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] ?>" method="post">
       <table border="0" cellpadding="2" cellspacing="2" width="100%">
         <tbody>
           <tr>
