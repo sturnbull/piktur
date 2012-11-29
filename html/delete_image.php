@@ -4,28 +4,23 @@
   # require user to be logged in
   if ( $_SESSION['authenticated'] != 'true' ) {
     header( 'Location: https://' . $_SERVER['SERVER_NAME'] . '/signin.php' );
-  }
-  
+  }  
   # prepare variables
   $msg = '';
-  $deleted = FALSE;
-  
   # Grab keyword
   $image_id = $_GET['image'];
   if ( !isset( $_POST['confirm_delete'] ) ) {
     $_SESSION['image_id'] = $image_id;
   } elseif ( $_POST['confirm_delete'] == 'Yes' ) {
-    $confirm = TRUE;
+      $confirm = TRUE;
     }
-
   # Review results
   if ( DEBUG ) {
     echo "IMAGE_ID: ".$_SESSION['image_id'].'<br>';
     echo "Session IMAGE_ID: ".$image_id.'<br>';
     echo "USER_ID: ".$_SESSION['user_id'].'<br>';
     echo "Confirm_Delete: ".$_POST['confirm_delete'].'<br>';
-  }
-  
+  }  
   #query database for image and check permissions
   if ( isset( $_SESSION['user_id'] ) and isset ( $_SESSION['image_id'] ) ) {
     #prepare query
@@ -117,23 +112,19 @@
             }
           }
         }
-      $msg = 'The image has been deleted';
+        $msg = 'The image has been deleted';
       } #end of delete image code
   }
 ?>
 
 <html>
-  <header>
-    <?php require 'header.php'; ?>
-  </header
-  <body>
-    <?php if ( !$confirm AND $results == '1' ) { ?>
-      <table border="1" cellpadding="2" cellspacing="2" width="100%">
-        <tbody>
-          <tr>
-            <td class="center_top"><br></td>
-            <td colspan="3" rowspan="1" class="notice"><?php echo $image_description; ?></td>
-            <td class="center_top"><br></td>
+  <?php require 'header.php'; ?>
+  <body>   
+    <table border="0" cellpadding="2" cellspacing="2" width="100%">
+      <tbody>
+        <?php if ( !$confirm AND $results == '1' ) { ?>
+          <tr>            
+            <td colspan="2" rowspan="1" class="notice"><?php echo $image_description; ?></td>
           </tr>
           <tr>
             <td colspan="3" rowspan="1" height="200" width="650" class="center_middle">
@@ -144,23 +135,18 @@
             <form id="confirm_delete_form" name="confirm_delete_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?image=' . $_SESSION['image_id'] ?>" method="post">
               <td class="formlabel">Confirm Delete:</td>
               <td class="forminput">
-              <input size="18" name="confirm_delete" id="confirm_delete" type="checkbox" value="Yes">            
+                <input size="18" name="confirm_delete" id="confirm_delete" type="checkbox" value="Yes">            
                 <input type="image" src="<?php echo  $protocol . $_SERVER['SERVER_NAME'] ?>/img/deletebutton.png" border="0" alt="Confirm Delete Button">
               </td>            
             </form>
           </tr>
-        </tbody>
-      </table>
-    <?php } ?>
-    <table border="1" cellpadding="2" cellspacing="2" width="100%">
-      <tbody>
-        <tr>
-          <td class="notice"><?php echo $msg ?></td>
-        </tr>
+        <?php } elseif ( $msg ) { ?>
+          <tr>
+            <td class="notice"><?php echo $msg ?></td>
+          </tr>          
+        <?php } ?> 
       </tbody>
-    </table>
+    </table>       
   </body>
-  <footer>
-    <?php require 'footer.php'; ?>  
-  </footer>
+  <?php require 'footer.php'; ?>  
 </html>
