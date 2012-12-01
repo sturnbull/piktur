@@ -49,11 +49,13 @@ if ( isset($_POST['xsubmit'] ) ) {
   # Define temp and new path to store image in
   $upload_dir = './uploads/';
   $uploadfile = $upload_dir . basename( $_FILES['upload']['name'] );
+  $thumbuploadfile = $upload_dir . 'THUMB_' . basename( $_FILES['upload']['name'] );
   $info = pathinfo( $uploadfile );
 
   # Build path to destination
   $folder = './pikturs/' . $_SESSION['name'] . '/' . $_SESSION['album'];
   $new_file = $folder . '/' . basename( $uploadfile, '.'.$info['extension']) . '.jpg';
+  $new_thumb = $folder . '/THUMB_' . basename( $uploadfile, '.'.$info['extension']) . '.jpg';
 
   # ensure uploaded with no errors
   if ( $_FILES['upload']['error'] > 0 ) {
@@ -78,23 +80,29 @@ if ( isset($_POST['xsubmit'] ) ) {
       $img = new Imagick( $uploadfile );
       $img->setImageResolution( 72,72 ); 
       $img->resampleImage( 72, 72, imagick::FILTER_UNDEFINED, 1 );
-      $img->scaleImage( 1024, 0 );
-      $d = $img->getImageGeometry(); 
-      $h = $d['height']; 
-      if( $h > 768 ) {
-        $img->scaleImage( 0, 768 );
-      }
+      $img->scaleImage( 1024, 768, TRUE );
       $img->setImageFormat( 'jpeg' );
       $img->setImageCompression( imagick::COMPRESSION_JPEG ); 
       $img->setImageCompressionQuality( 80 ); 
       $img->stripImage(); 
       $img->writeImage( $uploadfile  );
+
+      $thumb = new Imagick($uploadfile);
+      $thumb->scaleImage(50 , 50 , TRUE);
+      $thumb->writeImage($thumbuploadfile);
+
       $img->destroy();  
 
       # Move standardized file to file album directory
       if ( ! rename( $uploadfile, $new_file ) ) {
         die( 'File rename failed.' );
       }
+
+      # Move standardized file to file album directory
+      if ( ! rename( $thumbuploadfile, $new_thumb ) ) {
+        die( 'Thumb File rename failed.' );
+      }
+
       $_SESSION['image_name'] =  basename( $new_file );
       $_SESSION['image_checksum'] = hash_file( 'md5', $new_file );
 
