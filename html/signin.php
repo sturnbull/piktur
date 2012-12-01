@@ -67,7 +67,7 @@ if ( isset( $name ) and isset( $password_hash ) ) {
         $_SESSION['admin_flag'] = $admin_flag;
         $_SESSION['authenticated'] = 'true';
 
-        # Set session token cokie
+        # Set session token cookie
         setcookie ( 'token', md5( $_SERVER['HTTP_USER_AGENT'] . $_SERVER['REMOTE_ADDR'] . session_id() ), time()+$inactive );
 
         # Redirect user to albumview
