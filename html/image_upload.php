@@ -54,8 +54,9 @@ if ( isset($_POST['xsubmit'] ) ) {
 
   # Build path to destination
   $folder = './pikturs/' . $_SESSION['name'] . '/' . $_SESSION['album'];
+  $thumbfolder = './THUMB_pikturs/' . $_SESSION['name'] . '/' . $_SESSION['album'];
   $new_file = $folder . '/' . basename( $uploadfile, '.'.$info['extension']) . '.jpg';
-  $new_thumb = $folder . '/THUMB_' . basename( $uploadfile, '.'.$info['extension']) . '.jpg';
+  $new_thumb = $thumbfolder . '/' . basename( $uploadfile, '.'.$info['extension']) . '.jpg';
 
   # ensure uploaded with no errors
   if ( $_FILES['upload']['error'] > 0 ) {
