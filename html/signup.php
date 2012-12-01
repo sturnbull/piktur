@@ -25,7 +25,7 @@ if ( !empty( $_POST ) ) {
     # the code was incorrect
     $msg .= "The security code entered was incorrect.<br>";
     } else { 
-    # Only insert user if valid variabls exist
+    # Only insert user if valid variables exist
     if ( !$name) {
     # bad or empty username
       $msg .= "Invalid username, your username may only contain characters, numbers, or underscores.<br>";
