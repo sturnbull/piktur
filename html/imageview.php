@@ -85,7 +85,7 @@ elseif ( !$stmt->execute() ) {
 }
 
 # Bind results
-$stmt->bind_result( $image_id, $file, $image_description, $image_checksum ,$rating_cnt, $rating_total);
+$stmt->bind_result( $image_id, $file, $image_description, $image_checksum , $rating_cnt, $rating_total );
 
 # Get total of records in the result set
 $stmt->store_result();
@@ -135,32 +135,32 @@ while ( $stmt->fetch() ) {
           }
         }
       }
-     }
-        # Add new ratings
-        if ( isset( $_POST['rating_submit'] ) ) {
-            $rating = filter_input( INPUT_POST, 'rating', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[0-9]{1}$/" ) ) );
-            $rating_cnt++;
-            $rating_total= $rating_total+$rating;
-            if ( !( $stmt = $db->prepare( 'UPDATE `images` SET `rating_cnt`= ? ,`rating_total`= ? WHERE image_id= ?' ) ) ) {
-                die( 'Prepare failed for rating with rating = '.$rating.' rating_cnt='.$rating_cnt.' rating_total='.$rating_total.': (' . $db->errno . ') ' . $db->error );
-            }
-            else {
-                # Bind the variables into the prepared statement
-                if ( !$stmt->bind_param( 'iii', $rating_cnt, $rating_total ,$image_id ) ) {
-                    die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error ); }
-                else {
-                    # Execute the SQL command
-                    if ( !$stmt->execute() ) {
-                        die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
-                    }
-                    # Cleanup statement
-                    $stmt->close();
+    }
+
+    # Add new ratings
+    if ( isset( $_POST['rating_submit'] ) ) {
+      $rating = filter_input( INPUT_POST, 'rating', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[0-9]{1}$/" ) ) );
+      $rating_cnt++;
+      $rating_total= $rating_total+$rating;
+      if ( !( $stmt = $db->prepare( 'UPDATE `images` SET `rating_cnt`= ? ,`rating_total`= ? WHERE image_id= ?' ) ) ) {
+        die( 'Prepare failed for rating with rating = '.$rating.' rating_cnt='.$rating_cnt.' rating_total='.$rating_total.': (' . $db->errno . ') ' . $db->error );
+      } else {
+        # Bind the variables into the prepared statement
+        if ( !$stmt->bind_param( 'iii', $rating_cnt, $rating_total ,$image_id ) ) {
+          die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
+        } else {
+          # Execute the SQL command
+          if ( !$stmt->execute() ) {
+            die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+          }
+          # Cleanup statement
+          $stmt->close();
                             
-                    # Redirect back to album page
-                    header ( 'Location: '.$protocol.$_SERVER['SERVER_NAME'].'/imageview.php?album='.$_SESSION['album_id'].'&offset='.$offset );
-                }
-           }
+          # Redirect back to album page
+          header ( 'Location: '.$protocol.$_SERVER['SERVER_NAME'].'/imageview.php?album='.$_SESSION['album_id'].'&offset='.$offset );
+        }
       }
+    }
   }
 
   # Prepare the MySQL select statement on the server
@@ -208,6 +208,7 @@ while ( $stmt->fetch() ) {
   $checksums[$i] = $image_checksum;
   $descriptions[$i] = $image_description;
   $tags[$i] = implode( ', ', $tag_list );
+  $ratings[$i] = $rating_total / $rating_cnt;
   $i++;
 }
 unset( $i );
@@ -285,12 +286,12 @@ else {?>
         </tr>
         <tr>
           <form id="add_rating" name="add_rating" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$offset ?>" method="post" enctype="multipart/form-data">
-<td class="center_middle"></td>
-<td class="right_middle"><div>Current Rating = <?php if ($rating_cnt >=1 )  printf ("%5.2f", $rating_total/$rating_cnt ); else  echo "0"; ?> </div></td>^M
-<td class="center_middle"><div>0=Poor, 9=Great</div><select name="rating"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option selected="selected">5</option><option>6</option><option>7</option><option>8</option><option>9</option><br /></td>
-<td class="left_middle"><input type="submit" name="rating_submit" value="RATE"><br /></td>
-<td class="center_middle"></td>
-</form>
+          <td class="center_middle"></td>
+          <td class="right_middle"><div>Current Rating = <?php if ( isset( $ratings[$offset] ) ) { printf( "%5.2f", $ratings[$offset] ); } else { echo '0'; } ?></div></td>^M
+          <td class="center_middle"><div>0=Poor, 9=Great</div><select name="rating"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option selected="selected">5</option><option>6</option><option>7</option><option>8</option><option>9</option><br /></td>
+          <td class="left_middle"><input type="submit" name="rating_submit" value="RATE"><br /></td>
+          <td class="center_middle"></td>
+          </form>
         </tr>
         <tr>
           <td colspan="5" rowspan="1" class="center_top"><hr size="3" width="100%"></td>
