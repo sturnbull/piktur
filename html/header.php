@@ -11,7 +11,6 @@
     <link rel="stylesheet" type="text/css" href="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/css/livevalidation.css" />
     <link rel="stylesheet" type="text/css" href="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/css/piktur.css" />
     <script type="text/javascript" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/js/livevalidation_standalone.compressed.js"></script>
-    <script type="text/javascript" src="<?php echo $protocol . $_SERVER['SERVER_NAME'] ?>/js/livevalidation_search.js"></script>
   </head>
   <body>
     <table border="0" cellpadding="2" cellspacing="2" width="100%">
