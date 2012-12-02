@@ -287,7 +287,7 @@ else {?>
         <tr>
           <form id="add_rating" name="add_rating" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$offset ?>" method="post" enctype="multipart/form-data">
           <td class="center_middle"></td>
-          <td class="right_middle"><div>Current Rating = <?php if ( isset( $ratings[$offset] ) ) { printf( "%5.2f", $ratings[$offset] ); } else { echo '0'; } ?></div></td>^M
+          <td class="right_middle"><div>Current Rating = <?php if ( isset( $ratings[$offset] ) ) { printf( "%5.2f", $ratings[$offset] ); } else { echo '0'; } ?></div></td>
           <td class="center_middle"><div>0=Poor, 9=Great</div><select name="rating"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option selected="selected">5</option><option>6</option><option>7</option><option>8</option><option>9</option><br /></td>
           <td class="left_middle"><input type="submit" name="rating_submit" value="RATE"><br /></td>
           <td class="center_middle"></td>

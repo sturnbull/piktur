@@ -2,7 +2,7 @@
 require_once 'global.inc';
 
 # Prepare the MySQL query statement to select publicly accessible images
-if ( !( $stmt = $db->prepare( "SELECT CONCAT( `albums`.`path`, '/', `images`.`file_name` ) AS file, `images`.`image_checksum` FROM `images` JOIN ( `albums`, `album_images` ) ON ( `images`.`image_id` = `album_images`.`image_id` AND `album_images`.`album_id` = `albums`.`album_id` ) WHERE `images`.`public` = '1' ORDER BY RAND() LIMIT 1" ) ) ) {
+if ( !( $stmt = $db->prepare( "SELECT CONCAT( `albums`.`path`, '/', `images`.`file_name` ) AS file, `images`.`image_checksum`, `images`.`rating_cnt`, `images`.`rating_total`, `images`.`image_id` FROM `images` JOIN ( `albums`, `album_images` ) ON ( `images`.`image_id` = `album_images`.`image_id` AND `album_images`.`album_id` = `albums`.`album_id` ) WHERE `images`.`public` = '1' ORDER BY RAND() LIMIT 1" ) ) ) {
     die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
 }
 elseif ( !$stmt->execute() ) {
@@ -10,7 +10,7 @@ elseif ( !$stmt->execute() ) {
 }
 
 # Bind results
-$stmt->bind_result( $file, $image_checksum );
+$stmt->bind_result( $file, $image_checksum , $rating_cnt, $rating_total, $image_id);
 
 # Fetch results
 $stmt->fetch();
@@ -23,6 +23,9 @@ if ( $image_checksum != hash_file( 'md5', '/var/www/html/'.$file ) ) {
     die( "Image failed checksum verification: $file" );
 }
 
+$ratings = $rating_total / $rating_cnt;
+
+
 require 'header.php'; ?>
     <table border="0" cellpadding="2" cellspacing="2" width="100%">
       <tr>
@@ -30,6 +33,12 @@ require 'header.php'; ?>
           <img alt="image" src="http://<?php echo $_SERVER['SERVER_NAME'] . '/' . $file ?>" height="449" width="600"><br>
         </td>
       </tr>
+      <tr>
+        <form id="add_rating" name="add_rating" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] .'?image='.$image_id ?>" method="post" enctype="multipart/form-data">
+          <td class="center_middle"><div>Current Rating = <?php if ( isset( $ratings ) ) { printf( "%5.2f", $ratings ); } else { echo '0'; } ?><br>
+          0=Poor, 9=Great &nbsp<select name="rating"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option selected="selected">5</option><option>6</option><option>7</option><option>8</option><option>9</option>
+          <input type="submit" name="rating_submit" value="RATE"><br></div></td>
+</tr>
       <tr>
         <td class="center_middle">
           <a href="http://<?php echo $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] ?>"><img alt="Random Image" src="http://<?php echo $_SERVER['SERVER_NAME'] ?>/img/randomimagebutton.png" border="0" height="50" width="256"></a>
