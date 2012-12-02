@@ -120,6 +120,10 @@ require 'header.php';
               <table border="0" cellpadding="2" cellspacing="4" width="100%">
                 <tbody>
                   <tr>
+                    <td class="formlabel"> </td>
+                    <td class="formmsg">(64 chars max: lower-case alpha, '_', 0-9) </td>
+                  </tr>
+                  <tr>
                     <td class="formlabel">Album Name:</td>
                     <td class="forminput">
                       <input size="18" name="albumname" id="albumname" type="text"<?php if ( $name ) echo " value=\"$name\""; ?>>

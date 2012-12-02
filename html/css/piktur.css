@@ -19,7 +19,7 @@ TD.searchlabel {
   font-size: 16pt;
   color: #ffffff;
   vertical-align: middle;
-  text-align: right;
+  text-align: left;
 }
 
 TD.searchinput {
@@ -47,6 +47,12 @@ TD.formlabel {
 
 TD.forminput {
   vertical-align: text-top;
+  text-align: left;
+}
+
+TD.formmsg {
+  vertical-align: middle;
+  font-size: 10pt;
   text-align: left;
 }
 
