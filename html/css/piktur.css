@@ -52,6 +52,7 @@ TD.forminput {
 
 TD.formmsg {
   vertical-align: middle;
+  font-weight: bold;
   font-size: 10pt;
   text-align: left;
 }

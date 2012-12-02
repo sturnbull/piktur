@@ -121,7 +121,7 @@ require 'header.php';
                 <tbody>
                   <tr>
                     <td class="formlabel"> </td>
-                    <td class="formmsg">(64 chars max: lower-case alpha, '_', 0-9) </td>
+                    <td class="formmsg">(64 chars max: lower-case alpha, '_', 0-9.) </td>
                   </tr>
                   <tr>
                     <td class="formlabel">Album Name:</td>
