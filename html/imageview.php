@@ -66,7 +66,7 @@ $offset = filter_input( INPUT_GET, 'offset', FILTER_VALIDATE_INT, array( array("
 if ( !isset( $offset ) ) { $offset = 0; };
 
 # Prepare the MySQL query statement to select album images
-$sql = "SELECT `images`.`image_id`, CONCAT( `albums`.`path`, '/', `images`.`file_name` ) AS file, `images`.`description`, `images`.`image_checksum` ,`images`.`rating_cnt`,`images`.`rating_total` FROM `images` ";
+$sql = "SELECT `images`.`image_id`, CONCAT( `albums`.`path`, '/', `images`.`file_name` ) AS file, `images`.`description`, `images`.`image_checksum` ,`images`.`rating_cnt`,`images`.`rating_total`, `images`.`public` FROM `images` ";
 $sql .= "JOIN `album_images` ON `album_images`.`image_id` = `images`.`image_id` ";
 $sql .= "JOIN `albums` ON `albums`.`album_id` = `album_images`.`album_id` WHERE 1";
 #$sql .= " AND `images`.`public` = 'public'";
@@ -85,7 +85,7 @@ elseif ( !$stmt->execute() ) {
 }
 
 # Bind results
-$stmt->bind_result( $image_id, $file, $image_description, $image_checksum , $rating_cnt, $rating_total );
+$stmt->bind_result( $image_id, $file, $image_description, $image_checksum , $rating_cnt, $rating_total , $public );
 
 # Get total of records in the result set
 $stmt->store_result();
@@ -130,7 +130,7 @@ while ( $stmt->fetch() ) {
               $stmt->close();
 
               # Redirect back to album page
-              header ( 'Location: '.$protocol.$_SERVER['SERVER_NAME'].'/imageview.php?album='.$_SESSION['album_id'].'&offset='.$offset );
+              header ( 'Location: '.$protocol.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$_SESSION['album_id'].'&offset='.$offset );
             }
           }
         }
@@ -157,7 +157,33 @@ while ( $stmt->fetch() ) {
           $stmt->close();
                             
           # Redirect back to album page
-          header ( 'Location: '.$protocol.$_SERVER['SERVER_NAME'].'/imageview.php?album='.$_SESSION['album_id'].'&offset='.$offset );
+          header ( 'Location: '.$protocol.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$_SESSION['album_id'].'&offset='.$offset );
+        }
+      }
+    }
+
+    # Change Public setting 
+    if ( isset( $_POST['public_submit'] ) ) {
+
+  print "public is submitted!!!" ; 
+
+      $public = filter_input( INPUT_POST, 'public', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[01]{1}$/" ) ) );
+      if ( !( $stmt = $db->prepare( 'UPDATE `images` SET `public`= ? WHERE image_id= ?' ) ) ) {
+        die( 'Prepare failed for public : (' . $db->errno . ') ' . $db->error );
+      } else {
+        # Bind the variables into the prepared statement
+        if ( !$stmt->bind_param( 'ii', $public, $image_id ) ) {
+          die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
+        } else {
+          # Execute the SQL command
+          if ( !$stmt->execute() ) {
+            die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+          }
+          # Cleanup statement
+          $stmt->close();
+                            
+          # Redirect back to album page
+          header ( 'Location: '.$protocol.$_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$_SESSION['album_id'].'&offset='.$offset );
         }
       }
     }
@@ -202,15 +228,18 @@ while ( $stmt->fetch() ) {
     echo "FILE[$i]: $file<br>";
     echo "IMAGE_CHECKSUM[$i]: $image_checksum<br>";
     echo "IMAGE_DESCRIPTION[$i]: $image_description<br>";
+    echo "PUBLIC: $public<br>";
   }
   $ids[$i] = $image_id;
   $files[$i] = $file;
   $checksums[$i] = $image_checksum;
   $descriptions[$i] = $image_description;
+  $publics[$i] = $public;
   $tags[$i] = implode( ', ', $tag_list );
   $ratings[$i] = $rating_total / $rating_cnt;
   $i++;
 }
+
 unset( $i );
 
 require 'header.php';
@@ -289,10 +318,23 @@ else {?>
           <td class="center_middle"></td>
           <td class="right_middle"><div>Current Rating = <?php if ( isset( $ratings[$offset] ) ) { printf( "%5.2f", $ratings[$offset] ); } else { echo '0'; } ?></div></td>
           <td class="center_middle"><div>0=Poor, 9=Great</div><select name="rating"><option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option selected="selected">5</option><option>6</option><option>7</option><option>8</option><option>9</option><br /></td>
-          <td class="left_middle"><input type="submit" name="rating_submit" value="RATE"><br /></td>
+          <td class="left_middle"><input type="submit" name="rating_submit" value="Rate"><br /></td>
           <td class="center_middle"></td>
           </form>
         </tr>
+
+
+        <tr>
+          <form id="set_public" name="set_public" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$offset ?>" method="post" enctype="multipart/form-data">
+          <td class="center_middle"></td>
+          <td class="right_middle"></td>
+          <td class="center_middle"><div>Visibility: </div><select name="public"><option value="0"<?php if ($publics[$offset] == 1) { print ">Private</option><option value=\"1\" selected=\"selected\">Public</option>"; }else{ print " selected=\"selected\">Private</option><option value=\"1\" >Public</option>";} ?><br /></td>
+          <td class="left_middle"><input type="submit" name="public_submit" value="Set"><br /></td>
+          <td class="center_middle"></td>
+          </form>
+        </tr>
+
+
         <tr>
           <td colspan="5" rowspan="1" class="center_top"><hr size="3" width="100%"></td>
         </tr>

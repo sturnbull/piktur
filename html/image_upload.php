@@ -171,7 +171,7 @@ elseif ( isset( $_POST['zsubmit'] ) ) {
   }
   else {
       # Bind the variables into the prepared statement
-      if ( !$stmt->bind_param( 'sssb', $_SESSION['image_name'], $description, $_SESSION['image_checksum'], $public ) ) {
+      if ( !$stmt->bind_param( 'sssi', $_SESSION['image_name'], $description, $_SESSION['image_checksum'], $public ) ) {
           die( 'Binding parameters failed: (' . $stmt->errno . ') ' . $stmt->error );
       }
       else {
@@ -294,7 +294,7 @@ require 'header.php';
                 <tr>
                   <td class="formlabel">Public image:</td>
                   <td class="forminput">
-                    <input type="checkbox" name="public" id="public" value="public">
+                    <input type="checkbox" name="public" id="public" value="1">
                   </td>
                 </tr>
         	<tr>

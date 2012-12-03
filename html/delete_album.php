@@ -13,6 +13,7 @@
   $id = $_SESSION['user_id'];
   $msg = '';
   $path = '/pikturs/'. $user . '/' . $name;
+  $thumbpath = '/THUMB_pikturs/'. $user . '/' . $name;
   $perm = 'delete';
   $album_array = array(); 
   $albumID_array = array(); 
@@ -89,9 +90,12 @@
                 $stmt->bind_result($album_name );
                 $stmt->fetch();            
                 $path = "$path$album_name" ;
+                $thumbpath = "$thumbpath$album_name" ;
                 $path = getcwd() . "$path"."/";
+                $thumbpath = getcwd() . "$thumbpath"."/";
                 if (is_dir($path)) {              
                   system('/bin/rm -rf ' . escapeshellarg($path));
+                  system('/bin/rm -rf ' . escapeshellarg($thumbpath));
                 }
               }
               # Cleanup statement

@@ -28,6 +28,9 @@ if ($name) {
       if ( !mkdir( $path, 0770, true ) ) {
         die('Failed to create folder for user albums.');
       }
+      if ( !mkdir( './THUMB_pikturs/'. $user . '/' . $name, 0770, true ) ) {
+        die('Failed to create folder for user thumbs.');
+      }
       echo "This would create ${path}.<br>";
       
       # Insert New Album into Album Table
