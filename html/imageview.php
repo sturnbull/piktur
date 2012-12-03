@@ -239,7 +239,7 @@ require 'header.php';
           <td width="10%" class="right_top">
 <?php if ( $offset > 0 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$prev ?>">
-              <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/THUMB_'.$files[$prev] ?>" alt="Previous Image"><br>
+              <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/THUMB_'. ltrim($files[$prev], "./") ?>" alt="Previous Image"><br>
               <div class="copyight">Previous in Album</div>
             </a>
 <?php } ?>
@@ -255,7 +255,7 @@ else {?>
           <td width="10%" class="left_top">
 <?php if ( $offset < sizeof( $ids ) - 1 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$next ?>">
-              <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/THUMB_'.$files[$next] ?>" alt="Next Image"><br>
+              <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/THUMB_'. ltrim($files[$next], "./" ) ?>" alt="Next Image"><br>
               <div class="copyight">Next in Album</div>
             </a>
 <?php } ?>
