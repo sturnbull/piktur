@@ -48,24 +48,51 @@ if ( isset($_POST['xsubmit'] ) ) {
 	 
   # Define temp and new path to store image in
   $upload_dir = './uploads/';
-  $uploadfile = $upload_dir . basename( $_FILES['upload']['name'] );
-  $thumbuploadfile = $upload_dir . 'THUMB_' . basename( $_FILES['upload']['name'] );
-  $info = pathinfo( $uploadfile );
 
   # Build path to destination
   $folder = './pikturs/' . $_SESSION['name'] . '/' . $_SESSION['album'];
   $thumbfolder = './THUMB_pikturs/' . $_SESSION['name'] . '/' . $_SESSION['album'];
-  $new_file = $folder . '/' . basename( $uploadfile, '.'.$info['extension']) . '.jpg';
-  $new_thumb = $thumbfolder . '/' . basename( $uploadfile, '.'.$info['extension']) . '.jpg';
 
-  # ensure uploaded with no errors
-  if ( $_FILES['upload']['error'] > 0 ) {
-    echo 'Error uploading: ' . $_FILES['file']['error'] . '<br>';
-  }
-  else {
-    # set allowed file types
-    $allowedExts = array( 'jpg', 'jpeg', 'bmp', 'png' );
+  # set allowed file types
+  $allowedExts = array( 'jpg', 'jpeg', 'bmp', 'png' );
 
+  # if a URL is submitted
+  $url = trim($_POST["url"]);
+  if($url){
+    $file = fopen($url,"rb");
+    if($file){
+      $ext = end(explode(".",strtolower(basename($url))));
+      if(in_array($ext,$allowedExts)){
+        $filename = basename($url);
+        $newfile = fopen($upload_dir . $filename, "wb"); // creating new file on local server
+        if($newfile){
+          while(!feof($file)){
+            // Write the url file to the directory.
+            fwrite($newfile,fread($file,1024 * 8),1024 * 8); // write the file to the new directory at a rate of 8kb/sec. until we reach the end.
+            $uploadfile = $upload_dir . $filename;
+            $thumbuploadfile = $upload_dir . 'THUMB_' . $filename;
+            $info = pathinfo( $uploadfile );
+            $new_file = $folder . '/' . basename( $filename, '.'.$info['extension']) . '.jpg';
+            $new_thumb = $thumbfolder . '/' . basename( $filename, '.'.$info['extension']) . '.jpg';
+          }
+          echo 'File uploaded successfully!'."\n";
+          # Move file to location accessible by apache for display back to user
+          if ( ! rename( $upload_dir . $filename , $uploadfile ) ) {
+            die( 'Possible URL upload attack!' );
+          }
+        } else { echo 'Could not establish new file ('.$upload_dir.$filename.') on local server. Be sure to CHMOD your directory to 777.'; }
+      } else { echo 'Invalid file type. Please try another file.'; }
+    } else { echo 'Could not locate the file: '.$url.''; }
+  } else { 
+    $uploadfile = $upload_dir . basename( $_FILES['upload']['name'] );
+    $thumbuploadfile = $upload_dir . 'THUMB_' . basename( $_FILES['upload']['name'] );
+    $info = pathinfo( $uploadfile );
+    $new_file = $folder . '/' . basename( $uploadfile, '.'.$info['extension']) . '.jpg';
+    $new_thumb = $thumbfolder . '/' . basename( $uploadfile, '.'.$info['extension']) . '.jpg';
+    # ensure uploaded with no errors
+    if ( $_FILES['upload']['error'] > 0 ) {
+      echo 'Error uploading: ' . $_FILES['file']['error'] . '<br>';
+    }
     # ensure file mime type and extension are correct
     $extension = end( explode( '.', $_FILES['upload']['name'] ) );
     if ( ( ( $_FILES['upload']['type'] == 'image/bmp' || ( $_FILES['upload']['type'] == 'image/jpeg' )
@@ -76,48 +103,47 @@ if ( isset($_POST['xsubmit'] ) ) {
       if ( ! move_uploaded_file( $_FILES['upload']['tmp_name'], $uploadfile ) ) {
         die( 'Possible file upload attack!' );
       }
-
-      # Code to convert all images to max size of 800x600 72dpi and JPG format
-      $img = new Imagick( $uploadfile );
-      $img->setImageResolution( 72,72 ); 
-      $img->resampleImage( 72, 72, imagick::FILTER_UNDEFINED, 1 );
-      $img->scaleImage( 1024, 768, TRUE );
-      $img->setImageFormat( 'jpeg' );
-      $img->setImageCompression( imagick::COMPRESSION_JPEG ); 
-      $img->setImageCompressionQuality( 80 ); 
-      $img->stripImage(); 
-      $img->writeImage( $uploadfile  );
-
-      $thumb = new Imagick($uploadfile);
-      $thumb->scaleImage(50 , 50 , TRUE);
-      $thumb->writeImage($thumbuploadfile);
-
-      $img->destroy();  
-
-      # Move standardized file to file album directory
-      if ( ! rename( $uploadfile, $new_file ) ) {
-        die( 'File rename failed.' );
-      }
-
-      # Move standardized file to file album directory
-      if ( ! rename( $thumbuploadfile, $new_thumb ) ) {
-        die( 'Thumb File rename failed.' );
-      }
-
-      $_SESSION['image_name'] =  basename( $new_file );
-      $_SESSION['image_checksum'] = hash_file( 'md5', $new_file );
-
-      # If File is valid set preview to 1 - second pass
-      $preview = 1;
-
-      if ( DEBUG ) {
-        echo 'Upload: ' . $_FILES['upload']['name'] . '<br />';
-        echo 'Type: ' . $_FILES['upload']['type'] . '<br />';
-        echo 'Size: ' . ( $_FILES['upload']['size'] / 1024 ) . ' Kb<br />';
-        echo 'Stored in: ' . $_FILES['upload']['tmp_name'];
-        echo print_array( $_SESSION );
-      }
     }
+  }
+  # Code to convert all images to max size of 800x600 72dpi and JPG format
+  $img = new Imagick( $uploadfile );
+  $img->setImageResolution( 72,72 ); 
+  $img->resampleImage( 72, 72, imagick::FILTER_UNDEFINED, 1 );
+  $img->scaleImage( 1024, 768, TRUE );
+  $img->setImageFormat( 'jpeg' );
+  $img->setImageCompression( imagick::COMPRESSION_JPEG ); 
+  $img->setImageCompressionQuality( 80 ); 
+  $img->stripImage(); 
+  $img->writeImage( $uploadfile  );
+
+  $thumb = new Imagick($uploadfile);
+  $thumb->scaleImage(50 , 50 , TRUE);
+  $thumb->writeImage($thumbuploadfile);
+
+  $img->destroy();  
+
+  # Move standardized file to file album directory
+  if ( ! rename( $uploadfile, $new_file ) ) {
+    die( 'File rename failed.' );
+  }
+
+  # Move standardized file to file album directory
+  if ( ! rename( $thumbuploadfile, $new_thumb ) ) {
+    die( 'Thumb File rename failed.' );
+  }
+
+  $_SESSION['image_name'] =  basename( $new_file );
+  $_SESSION['image_checksum'] = hash_file( 'md5', $new_file );
+
+  # If File is valid set preview to 1 - second pass
+  $preview = 1;
+
+  if ( DEBUG ) {
+    echo 'Upload: ' . $_FILES['upload']['name'] . '<br />';
+    echo 'Type: ' . $_FILES['upload']['type'] . '<br />';
+    echo 'Size: ' . ( $_FILES['upload']['size'] / 1024 ) . ' Kb<br />';
+    echo 'Stored in: ' . $_FILES['upload']['tmp_name'];
+    echo print_array( $_SESSION );
   }
 }
 # THIRD PASS: check if save file submit button was clicked
@@ -283,7 +309,7 @@ require 'header.php';
 <?php } elseif ( $preview == 0 ) { ?>
     	  <form id="image_upload_form" name="image_upload_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">
             <td class="center_top">
-              <input type="file" name="upload" /><br><br>
+              <input type="file" name="upload"> or Enter URL: <input type="text" name="url" size="35" /> <br><br>
               <input type="submit" name="xsubmit" value="Upload" /><br>
             </td>
           </tr>
