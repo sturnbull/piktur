@@ -69,6 +69,9 @@
                     }
                     # Cleanup statement
                         $stmt->close();
+                        # Issue #75.  Notify user that password change was successful. 
+                        # Would prefer to make it more obvious, but for now will use this message. 
+                        $msg = 'Password change successful!!!';
                   }            
               } 
       }
