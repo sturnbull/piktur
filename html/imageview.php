@@ -65,8 +65,8 @@ if ( ! in_array( $album_id, $album_ids, TRUE ) ) { header ( 'Location: '.$protoc
 $offset = filter_input( INPUT_GET, 'offset', FILTER_VALIDATE_INT, array( array("min_range"=>0) ) );
 if ( !isset( $offset ) ) { $offset = 0; };
 
-# Prepare the MySQL query statement to select album images
-$sql = "SELECT `images`.`image_id`, CONCAT( `albums`.`path`, '/', `images`.`file_name` ) AS file, `images`.`description`, `images`.`image_checksum` ,`images`.`rating_cnt`,`images`.`rating_total`, `images`.`public` FROM `images` ";
+# Prepare the MySQL query statement to select album images - PRH added images.filename to be able to display just image name
+$sql = "SELECT `images`.`image_id`, CONCAT( `albums`.`path`, '/', `images`.`file_name` ) AS file, `images`.`file_name`, `images`.`description`, `images`.`image_checksum` ,`images`.`rating_cnt`,`images`.`rating_total`, `images`.`public` FROM `images` ";
 $sql .= "JOIN `album_images` ON `album_images`.`image_id` = `images`.`image_id` ";
 $sql .= "JOIN `albums` ON `albums`.`album_id` = `album_images`.`album_id` WHERE 1";
 #$sql .= " AND `images`.`public` = 'public'";
@@ -84,8 +84,8 @@ elseif ( !$stmt->execute() ) {
   die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
 }
 
-# Bind results
-$stmt->bind_result( $image_id, $file, $image_description, $image_checksum , $rating_cnt, $rating_total , $public );
+# Bind results - PRH added image_name to be able to display just image name
+$stmt->bind_result( $image_id, $file, $image_name, $image_description, $image_checksum , $rating_cnt, $rating_total , $public );
 
 # Get total of records in the result set
 $stmt->store_result();
@@ -232,6 +232,7 @@ while ( $stmt->fetch() ) {
   }
   $ids[$i] = $image_id;
   $files[$i] = $file;
+  $file_name[$i] = $image_name;
   $checksums[$i] = $image_checksum;
   $descriptions[$i] = $image_description;
   $publics[$i] = $public;
@@ -261,9 +262,11 @@ require 'header.php';
         </tr>
         <tr>
           <td class="center_top"><br></td>
-          <td colspan="3" rowspan="1" class="notice">
-            Image Name: <?php echo $files[$offset] ?><br>
-            Image Description: <?php echo $descriptions[$offset] ?></td>
+          <td class="right_middle">Image Name: <br>Image Description: </td>
+          <td colspan="2" rowspan="1" class="notice">
+            <?php echo $file_name[$offset] ?><br>
+            <?php echo $descriptions[$offset] ?></td>
+          <td class="center_top"><br></td>
           <td class="center_top"><br></td>
         </tr>
         <tr>
