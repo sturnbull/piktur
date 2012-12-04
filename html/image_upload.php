@@ -155,8 +155,8 @@ elseif ( isset( $_POST['zsubmit'] ) ) {
   $description = filter_input( INPUT_POST, 'description', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[a-z0-9_ ]{1,255}$/" ) ) );
   $tags = filter_input( INPUT_POST, 'tags', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[a-z0-9_, ]{1,255}$/" ) ) );
   $tag_list = preg_split( "/,/", $tags );
-  $public = 0;
   $public = filter_input( INPUT_POST, 'public', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^1$/" ) ) );
+  if ($public != 1) { $public = 0; }
 
   if ( DEBUG ) {
       echo "DESCRIPTION: '$description'<br />";

@@ -100,7 +100,7 @@ require 'header.php'; ?>
         # Close the statement
         $stmt->close();
       }
-      if ($prev_image) { print '<a href="http://' . $_SERVER['SERVER_NAME'] . '/' . $_SERVER['PHP_SELF'] . '?image=' . $prev_image . '"><div>PREVIOUS</div></a>'; } 
+      if ($prev_image) { print '<a href="http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?image=' . $prev_image . '"><div>PREVIOUS</div></a>'; } 
 ?>
       </td>
         <td height="500" class="center_middle">
@@ -127,7 +127,7 @@ require 'header.php'; ?>
         # Close the statement
         $stmt->close();
       }
-      if ($next_image) { print '<a href="http://' . $_SERVER['SERVER_NAME'] . '/' . $_SERVER['PHP_SELF'] . '?image=' . $next_image . '"> <div>NEXT</div></a>'; } 
+      if ($next_image) { print '<a href="http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?image=' . $next_image . '"> <div>NEXT</div></a>'; } 
 ?>
     </td>
       </tr>
