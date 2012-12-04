@@ -262,8 +262,8 @@ require 'header.php';
         </tr>
         <tr>
           <td class="center_top"><br></td>
-          <td class="right_middle"><div>Image Name: <br>Image Description: </div></td>
-          <td colspan="2" rowspan="1" class="left_middle"><div>
+          <td class="right_top"><div class="titles">Image Name: <br>Image Description: </div></td>
+          <td colspan="2" rowspan="1" class="left_top"><div>
             <?php echo $file_name[$offset] ?><br>
             <?php echo $descriptions[$offset] ?></div></td>
           <td class="center_top"><br></td>
@@ -272,8 +272,8 @@ require 'header.php';
           <td width="10%" class="right_top">
 <?php if ( $offset > 0 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$prev ?>">
-              <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/THUMB_'. ltrim($files[$prev], "./") ?>" alt="Previous Image"><br>
-              <div class="copyight">Previous in Album</div>
+              <div class="titles">Previous in Album</div><br>
+              <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/THUMB_'. ltrim($files[$prev], "./") ?>" alt="Previous Image">
             </a>
 <?php } ?>
           </td>
@@ -288,8 +288,8 @@ else {?>
           <td width="10%" class="left_top">
 <?php if ( $offset < sizeof( $ids ) - 1 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$next ?>">
-              <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/THUMB_'. ltrim($files[$next], "./" ) ?>" alt="Next Image"><br>
-              <div class="copyight">Next in Album</div>
+              <div class="titles">Next in Album</div><br>
+              <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/THUMB_'. ltrim($files[$next], "./" ) ?>" alt="Next Image">
             </a>
 <?php } ?>
           </td>
@@ -298,7 +298,7 @@ else {?>
           <td class="right_top">
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/image_upload.php' ?>"><img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/newbutton.png' ?>" height="40" width="87" alt="newimage"></a><br />
           </td>
-          <td colspan="3" rowspan="1" class="tag_list"><?php echo $tags[$offset]; ?></td>
+          <td class="center_top" colspan="3" rowspan="1" class="tag_list"><?php echo $tags[$offset]; ?></td>
           <td valign="left_top">
 <?php if ( $results > 0 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_image.php?image='.$ids[$offset] ?>"><img alt="delete" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/deletebutton.png' ?>" height="40" width="115"></a><br />
