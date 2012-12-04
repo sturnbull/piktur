@@ -6,3 +6,6 @@
 
 # Ignore the swap files!!!
 *.swp
+
+# Ignore mysqldump backup
+mysqldump
