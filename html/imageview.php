@@ -262,14 +262,14 @@ require 'header.php';
         </tr>
         <tr>
           <td class="center_top"><br></td>
-          <td class="right_top"><div class="titles">Image Name: <br>Image Description: </div></td>
+          <td class="title_right"><div>Image Name: <br>Image Description: </div></td>
           <td colspan="2" rowspan="1" class="left_top"><div>
             <?php echo $file_name[$offset] ?><br>
             <?php echo $descriptions[$offset] ?></div></td>
           <td class="center_top"><br></td>
         </tr>
         <tr>
-          <td width="10%" class="right_top">
+          <td width="10%" class="title_right">
 <?php if ( $offset > 0 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$prev ?>">
               <div class="titles">Previous in Album</div><br>
@@ -285,7 +285,7 @@ else {?>
             <div>You have not yet uploaded any pictures.<br />Please click <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/image_upload.php' ?>">here</a> or the [New] button below.</div>
 <?php } ?>
           </td>
-          <td width="10%" class="left_top">
+          <td width="10%" class="title_left">
 <?php if ( $offset < sizeof( $ids ) - 1 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$next ?>">
               <div class="titles">Next in Album</div><br>
