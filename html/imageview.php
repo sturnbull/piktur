@@ -261,7 +261,9 @@ require 'header.php';
         </tr>
         <tr>
           <td class="center_top"><br></td>
-          <td colspan="3" rowspan="1" class="notice"><?php echo $descriptions[$offset]; ?></td>
+          <td colspan="3" rowspan="1" class="notice">
+            Image Name: <?php echo $files[$offset] ?><br>
+            Image Description: <?php echo $descriptions[$offset] ?></td>
           <td class="center_top"><br></td>
         </tr>
         <tr>
