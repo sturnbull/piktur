@@ -262,10 +262,10 @@ require 'header.php';
         </tr>
         <tr>
           <td class="center_top"><br></td>
-          <td class="right_middle">Image Name: <br>Image Description: </td>
-          <td colspan="2" rowspan="1" class="left_middle">
+          <td class="right_middle"><div>Image Name: <br>Image Description: </div></td>
+          <td colspan="2" rowspan="1" class="left_middle"><div>
             <?php echo $file_name[$offset] ?><br>
-            <?php echo $descriptions[$offset] ?></td>
+            <?php echo $descriptions[$offset] ?></div></td>
           <td class="center_top"><br></td>
           <td class="center_top"><br></td>
         </tr>
