@@ -262,7 +262,7 @@ require 'header.php';
         </tr>
         <tr>
           <td class="center_top"><br></td>
-          <td class="title_right"><div>Image Name: <br>Image Description: </div></td>
+          <td class="title_right">Image Name: <br>Image Description: </td>
           <td colspan="2" rowspan="1" class="left_top"><div>
             <?php echo $file_name[$offset] ?><br>
             <?php echo $descriptions[$offset] ?></div></td>
@@ -272,7 +272,7 @@ require 'header.php';
           <td width="10%" class="title_right">
 <?php if ( $offset > 0 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$prev ?>">
-              <div class="titles">Previous in Album</div><br>
+              Previous in Album<br>
               <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/THUMB_'. ltrim($files[$prev], "./") ?>" alt="Previous Image">
             </a>
 <?php } ?>
@@ -288,7 +288,7 @@ else {?>
           <td width="10%" class="title_left">
 <?php if ( $offset < sizeof( $ids ) - 1 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$next ?>">
-              <div class="titles">Next in Album</div><br>
+              Next in Album<br>
               <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/THUMB_'. ltrim($files[$next], "./" ) ?>" alt="Next Image">
             </a>
 <?php } ?>
