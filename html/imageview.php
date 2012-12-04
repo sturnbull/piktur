@@ -298,7 +298,7 @@ else {?>
           <td class="right_top">
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/image_upload.php' ?>"><img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/newbutton.png' ?>" height="40" width="87" alt="newimage"></a><br />
           </td>
-          <td class="center_top" colspan="3" rowspan="1" class="tag_list"><?php echo $tags[$offset]; ?></td>
+          <td colspan="3" rowspan="1" class="tag_list"><?php echo $tags[$offset]; ?></td>
           <td valign="left_top">
 <?php if ( $results > 0 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_image.php?image='.$ids[$offset] ?>"><img alt="delete" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/img/deletebutton.png' ?>" height="40" width="115"></a><br />
