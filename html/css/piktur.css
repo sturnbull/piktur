@@ -32,7 +32,7 @@ TD.tag_list {
   font-weight: bold;
   font-size: 10pt;
   color: #ffffff;
-  vertical-align: text-top;
+  vertical-align: top;
   text-align: center;
 }
 
@@ -41,7 +41,7 @@ TD.title_right {
   font-weight: bold;
   font-size: 12pt;
   color: #ffff00;
-  vertical-align: text-top;
+  vertical-align: top;
   text-align: right;
 }
 
@@ -50,7 +50,7 @@ TD.title_left {
   font-weight: bold;
   font-size: 12pt;
   color: #ffff00;
-  vertical-align: text-top;
+  vertical-align: top;
   text-align: left;
 }
 
