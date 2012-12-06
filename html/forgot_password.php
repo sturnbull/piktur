@@ -160,7 +160,7 @@
                         #$password_hash =  hash( 'sha512', $password );
                         $forgotten_hash = hash( 'sha512', $password );
 
-                        # Update password hash in database and disable the account
+                        # Update forgotten_hash in db. 
                         if ( !( $stmt = $db->prepare( "UPDATE `piktur`.`users` SET `piktur`.`users`.`forgotten_hash` = ? WHERE `piktur`.`users`.`email_address` = ?;" ) ) ) {
                           die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
                         } else {
@@ -177,7 +177,7 @@
                               }
                           }
 
-                        # Send email to user to activate account
+                        # Send email to user to reset password
                         $subject = 'PIKTUR Password Reset';
                         $message = '
                         <html>
