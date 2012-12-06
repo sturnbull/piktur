@@ -26,7 +26,7 @@
   if ( $key )
   {
       $email = filter_input( INPUT_GET, 'email', FILTER_VALIDATE_EMAIL );
-          if ( !$email ) {
+      if ( !$email ) {
           $msg .= "Invalid email address.<br>";
       } else {
             #check for email address
