@@ -8,6 +8,10 @@ function print_array( $var )
     return( "<pre>".str_replace('><?', '>', highlight_string( '<'.'?'.$input, true ) )."</pre>" ); 
 } 
 
+function getDataURI( $image, $mime = '' ) {
+    return 'data:'.( function_exists( 'mime_content_type' ) ? mime_content_type( $image ) : $mime ) . ';base64,' . base64_encode( file_get_contents( $image ) );
+}
+
 # Defined constants
 defined( 'DB_NAME' ) or define( 'DB_NAME', 'piktur' );
 defined( 'DB_HOST' ) or define( 'DB_HOST', 'piktur2.poly.edu' );

@@ -130,7 +130,7 @@
           </tr>
           <tr>
             <td colspan="3" rowspan="1" height="200" width="650" class="center_middle">
-              <img alt="<?php echo $image_description ?>" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$file ?>" height="449" width="600"><br>
+              <img alt="<?php echo $image_description ?>" src="<?php echo getDataURI( $file ) ?>" height="449" width="600"><br>
             </td>
           </tr>        
           <tr>

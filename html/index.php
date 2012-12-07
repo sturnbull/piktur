@@ -104,7 +104,7 @@ require 'header.php'; ?>
 ?>
       </td>
         <td height="500" class="center_middle">
-          <img alt="image" src="http://<?php echo $_SERVER['SERVER_NAME'] . '/' . $file ?>" height="auto" width="600"><br>
+          <img alt="image" src="<?php echo getDataURI( $file ) ?>" height="auto" width="600"><br>
         </td>
       <td width="10%" class="right_top">
 <?php 

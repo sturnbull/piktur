@@ -272,7 +272,7 @@ require 'header.php';
 <?php if ( $preview == 1 ) { ?>
           <tr>
             <td class="center_top">
-              <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'] . '/' . $new_file; ?>">
+              <img src="<?php echo getDataURI( $new_file ) ?>">
             </td>
           </tr>
     	  <form id="image_save_form" name="image_save_form" action="<?php echo $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">

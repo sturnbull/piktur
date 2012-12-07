@@ -158,14 +158,14 @@
           <td width="10%" class="right_top">
             <?php if ( $offset > 0 ) { ?>
               <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?offset='.$prev ?>">
-                <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$files[$prev] ?>" alt="Previous Image" height="75" width="100"><br>
+                <img src="<?php echo getDataURI( $files[$prev] ) ?>" alt="Previous Image" height="75" width="100"><br>
                 <div class="copyight">Previous Image</div>
               </a>
              <?php } ?>
           </td>
           <td colspan="3" rowspan="1" height="200" width="650" class="center_middle">
             <?php if ( $results > 0 ) { ?>
-              <img alt="<?php echo $descriptions[$offset] ?>" src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$files[$offset] ?>" height="449" width="600"><br>
+              <img alt="<?php echo $descriptions[$offset] ?>" src="<?php echo getDataURI( $files[$offset] ) ?>" height="449" width="600"><br>
             <?php } else {?>
               <div>No images were returned by this search.</div>
             <?php } ?>
@@ -173,7 +173,7 @@
           <td width="10%" class="left_top">
             <?php if ( $offset < sizeof( $ids ) - 1 ) { ?>
               <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?offset='.$next ?>">
-                <img src="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/'.$files[$next] ?>" alt="Next Image" height="75" width="100"><br>
+                <img src="<?php echo getDataURI( $files[$next] ) ?>" alt="Next Image" height="75" width="100"><br>
                 <div class="copyight">Next Image</div>
               </a>
             <?php } ?>
