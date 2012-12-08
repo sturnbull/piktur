@@ -80,7 +80,7 @@
                     if ( $i < $results) {
                     # display user album 
               ?>
-              <td  class="notice"><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/imageview.php?album='.$ids[$i] ?>"><img src="pikturs/DSCN0058.JPG" alt="" height="75" width="100"><br><?php echo $names[$i] ?></a></td>
+              <td  class="notice"><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/imageview.php?album='.$ids[$i] ?>"><img src="<?php echo getDataURI( '/var/www/pikturs/DSCN0058.JPG' ) ?>" alt="" height="75" width="100"><br><?php echo $names[$i] ?></a></td>
               <?php
                     $i++; # increment album number
                     } else { 

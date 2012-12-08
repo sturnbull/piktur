@@ -1,5 +1,5 @@
 <?php
-require_once 'global.inc';
+require_once '/etc/piktur/global.inc';
 
 $image = filter_input( INPUT_GET, 'image', FILTER_VALIDATE_INT, array( array("min_range"=>0) ) );
 
@@ -44,7 +44,7 @@ if ($image) {
   $stmt->close();
 }
 # Ensure image checksum is correct before allowing it to be displayed
-if ( $image_checksum != hash_file( 'md5', '/var/www/html/'.$file ) ) {
+if ( $image_checksum != hash_file( 'md5', $file ) ) {
     die( "Image failed checksum verification: $file" );
 }
 

@@ -1,5 +1,5 @@
 <?php
-require_once 'global.inc';
+require_once '/etc/piktur/global.inc';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/securimage/securimage.php';
 
 
@@ -25,7 +25,7 @@ if ( !empty( $_POST ) ) {
     # the code was incorrect
     $msg .= "The security code entered was incorrect.<br>";
     } else { 
-    # Only insert user if valid variables exist
+    # Only insert user if valid variabls exist
     if ( !$name) {
     # bad or empty username
       $msg .= "Invalid username, your username may only contain characters, numbers, or underscores.<br>";

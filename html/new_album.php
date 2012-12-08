@@ -1,5 +1,5 @@
 <?php
-require_once 'global.inc';
+require_once '/etc/piktur/global.inc';
 
 # user input validation
 $name = filter_input( INPUT_POST, 'albumname', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[a-z0-9_]{1,64}$/" ) ) );
@@ -7,7 +7,7 @@ $description = filter_input( INPUT_POST, 'albumdescription', FILTER_VALIDATE_REG
 $user = $_SESSION['name'];
 $id = $_SESSION['user_id'];
 $msg = '';
-$path = './pikturs/'. $user . '/' . $name;
+$path = '/var/www/pikturs/'. $user . '/' . $name;
 $perm = 'delete';
 
 # require user to be logged in
@@ -28,7 +28,7 @@ if ($name) {
       if ( !mkdir( $path, 0770, true ) ) {
         die('Failed to create folder for user albums.');
       }
-      if ( !mkdir( './THUMB_pikturs/'. $user . '/' . $name, 0770, true ) ) {
+      if ( !mkdir( '/var/www/THUMB_pikturs/'. $user . '/' . $name, 0770, true ) ) {
         die('Failed to create folder for user thumbs.');
       }
       echo "This would create ${path}.<br>";

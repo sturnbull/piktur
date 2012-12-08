@@ -1,5 +1,5 @@
 <?php
-require_once 'global.inc';
+require_once '/etc/piktur/global.inc';
 
 # Validate user input from form post
 $name = filter_input( INPUT_POST, 'username', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[a-z0-9_]{1,64}$/" ) ) );

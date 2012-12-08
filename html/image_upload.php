@@ -1,5 +1,5 @@
 <?php
-require_once 'global.inc';
+require_once '/etc/piktur/global.inc';
 
 $preview = 0;
 
@@ -47,11 +47,11 @@ else {
 if ( isset($_POST['xsubmit'] ) ) {
 	 
   # Define temp and new path to store image in
-  $upload_dir = './uploads/';
+  $upload_dir = '/tmp/uploads/';
 
   # Build path to destination
-  $folder = './pikturs/' . $_SESSION['name'] . '/' . $_SESSION['album'];
-  $thumbfolder = './THUMB_pikturs/' . $_SESSION['name'] . '/' . $_SESSION['album'];
+  $folder = '/var/www/pikturs/' . $_SESSION['name'] . '/' . $_SESSION['album'];
+  $thumbfolder = '/var/www/THUMB_pikturs/' . $_SESSION['name'] . '/' . $_SESSION['album'];
 
   # set allowed file types
   $allowedExts = array( 'jpg', 'jpeg', 'bmp', 'png' );

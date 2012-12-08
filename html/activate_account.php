@@ -1,5 +1,5 @@
 <?php
-  require_once 'global.inc';
+  require_once '/etc/piktur/global.inc';
 
   $email_address = filter_input( INPUT_GET, 'email', FILTER_VALIDATE_EMAIL );
   $hash = filter_input( INPUT_GET, 'key', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[0-9a-f]{128}$/" ) ) );

@@ -1,5 +1,5 @@
 <?php
-  require_once 'global.inc';
+  require_once '/etc/piktur/global.inc';
 
   # require user to be logged in
   if ( $_SESSION['authenticated'] != 'true' ) {

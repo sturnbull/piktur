@@ -1,5 +1,5 @@
 <?php
-require_once 'global.inc';
+require_once '/etc/piktur/global.inc';
 
 # require user to be logged in
 if ( $_SESSION['authenticated'] != 'true' ) {
@@ -164,8 +164,6 @@ while ( $stmt->fetch() ) {
 
     # Change Public setting 
     if ( isset( $_POST['public_submit'] ) ) {
-
-  print "public is submitted!!!" ; 
 
       $public = filter_input( INPUT_POST, 'public', FILTER_VALIDATE_REGEXP, array( "options"=>array( "regexp"=>"/^[01]{1}$/" ) ) );
       if ( !( $stmt = $db->prepare( 'UPDATE `images` SET `public`= ? WHERE image_id= ?' ) ) ) {
