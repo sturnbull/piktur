@@ -12,8 +12,8 @@
   $user = $_SESSION['name'];
   $id = $_SESSION['user_id'];
   $msg = '';
-  $path = '/pikturs/'. $user . '/' . $name;
-  $thumbpath = '/THUMB_pikturs/'. $user . '/' . $name;
+  $path = '/var/www/pikturs/'. $user . '/' . $name;
+  $thumbpath = '/var/www/THUMB_pikturs/'. $user . '/' . $name;
   $perm = 'delete';
   $album_array = array(); 
   $albumID_array = array(); 
