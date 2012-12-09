@@ -271,7 +271,7 @@ require 'header.php';
 <?php if ( $offset > 0 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$prev ?>">
               Previous in Album<br>
-              <img src="<?php echo getDataURI( 'THUMB_' . ltrim( $files[$prev], "./" ) ) ?>" alt="Previous Image">
+              <img src="<?php echo getDataURI(  preg_replace( "/\/var\/www\/pikturs\//", "/var/www/THUMB_pikturs/",$files[$prev] ) )?>" alt="Previous Image">
             </a>
 <?php } ?>
           </td>
@@ -287,7 +287,7 @@ else {?>
 <?php if ( $offset < sizeof( $ids ) - 1 ) { ?>
             <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].$_SERVER['PHP_SELF'].'?album='.$album_id.'&offset='.$next ?>">
               Next in Album<br>
-              <img src="<?php echo getDataURI( 'THUMB_' . ltrim($files[$next], "./" ) ) ?>" alt="Next Image">
+              <img src="<?php echo getDataURI(  preg_replace( "/\/var\/www\/pikturs\//", "/var/www/THUMB_pikturs/",$files[$next] ) ) ?>" alt="Next Image">
             </a>
 <?php } ?>
           </td>
