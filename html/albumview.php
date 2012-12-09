@@ -1,5 +1,5 @@
 <?php
-  require_once 'global.inc';
+  require_once '/etc/piktur/global.inc';
 
   # Define page layout - reset by PRH 11/11
   $albums_per_page = 12; # reset by PRH 11/11
