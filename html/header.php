@@ -40,6 +40,9 @@
           <a href="<?php echo 'https://' . $_SERVER['SERVER_NAME'] ?>/albumview.php">[ Album View ]</a>
         </td>
         <td class="right_middle">
+          <?php if ($_SESSION['admin_flag'] == 'true' ) { ?>
+	    <a href="<?php echo 'https://' . $_SERVER['SERVER_NAME'] ?>/adminview.php">[ Administrative Control ]</a>
+          <?php } ?>
           <a href="<?php echo 'https://' . $_SERVER['SERVER_NAME'] ?>/admin.php">[ Manage My Account ]</a>
           <a href="<?php echo 'https://' . $_SERVER['SERVER_NAME'] ?>/signout.php">[ Signout ]</a>
         </td>
