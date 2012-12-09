@@ -84,22 +84,19 @@
                <td>Image Name</td>
                <td>Image Description</td>
             <tr>
-            <tr>
               <?php 
                 $i=0; # set the inital  number
-                while ( $i < $results) {
-                    # display users album 
-              ?>
-                <td><img src="<?php echo getDataURI(  preg_replace( "/\/var\/www\/pikturs\//", "/var/www/THUMB_pikturs/",$files[$i] ) ) ?>" ></td>
-                <td ><?php echo $owners[$i] ?></td>
-                <td><?php echo $names[$i] ?></a></td>
-                <td ><?php echo $image_names[$i] ?></td>
-                <td ><?php echo $image_descriptions[$i] ?></td>
-              </tr>
+                while ( $i < $results) { # display users album ?>
+                  <tr>
+                    <td><img src="<?php echo getDataURI(  preg_replace( "/\/var\/www\/pikturs\//", "/var/www/THUMB_pikturs/",$files[$i] ) ) ?>" ></td>
+                    <td><a href=""><?php echo $owners[$i]?></a></td>
+                    <td><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_album.php?album='.$ids[$i] ?>"><?php echo $names[$i]?></a></td>
+                    <td><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_image.php?image='.$image_ids[$i] ?>" ><?php echo $image_names[$i] ?></a></td>
+                    <td><?php echo $image_descriptions[$i] ?></td>
+                  </tr>
               <?php
                     $i++; # increment album number
-                    } 
-              ?>
+                    } ?>
             </tr>
             <tr>
             </tr>
