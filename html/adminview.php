@@ -88,7 +88,18 @@
                 $i=0; # set the inital  number
                 while ( $i < $results) { # display users album ?>
                   <tr>
-                    <td><img src="<?php echo getDataURI(  preg_replace( "/\/var\/www\/pikturs\//", "/var/www/THUMB_pikturs/",$files[$i] ) ) ?>" ></td>
+                    <td><img src="<?php 
+                      if (! file_exists (preg_replace( "/\/var\/www\/pikturs\//", "/var/www/THUMB_pikturs/",$files[$i] ) ) ) {
+                          $folder = '/var/www/pikturs/' . $owners[$i] . '/' . $names[$i];
+                          $thumbfolder = '/var/www/THUMB_pikturs/' . $owners[$i] . '/' . $names[$i];
+                          $info = pathinfo( $files[$i]) ;
+                          $new_thumb = $thumbfolder . '/' . basename( $files[$i], '.'.$info['extension']) . '.jpg';
+                          $thumb = new Imagick($files[$i]);
+                          $thumb->scaleImage(50 , 50 , TRUE);
+                          $thumb->writeImage($new_thumb); 
+                          $thumb->destroy();
+		      }
+                    echo getDataURI(  preg_replace( "/\/var\/www\/pikturs\//", "/var/www/THUMB_pikturs/",$files[$i] ) ) ?>" ></td>
                     <td><a href=""><?php echo $owners[$i]?></a></td>
                     <td><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_album.php?album='.$ids[$i] ?>"><?php echo $names[$i]?></a></td>
                     <td><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_image.php?image='.$image_ids[$i] ?>" ><?php echo $image_names[$i] ?></a></td>
