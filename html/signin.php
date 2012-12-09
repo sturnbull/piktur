@@ -60,7 +60,9 @@ if ( isset( $name ) and isset( $password_hash ) ) {
     $_SESSION['user_id'] = $user_id;
     $_SESSION['name'] = $name;
     $_SESSION['email_address'] = $email_address;
-    $_SESSION['admin_flag'] = $admin_flag;
+    if ($admin_flag & 0X1) {
+      $_SESSION['admin_flag'] = 'true';
+    } 
     $_SESSION['authenticated'] = 'true';
 
     # Set session token cokie
