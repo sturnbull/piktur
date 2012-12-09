@@ -47,7 +47,35 @@
                 $stmt->store_result();
                 $results = $stmt->num_rows;
                 if ( $results != '1' ) {
-                  $msg = 'You are unable to delete this image';
+                  if( $_SESSION['admin_flag'] != 'true' ) {
+                    $msg = 'You are unable to delete this image';
+                  } else {
+                     $msg = 'You are an admin and able to delete this image';
+                     unset ($stmt, $sql, $results);
+                     $sql = "SELECT CONCAT( `piktur`.`albums`.`path`, '/', `piktur`.`images`.`file_name` ) ";
+                     $sql .= "AS file, `piktur`.`images`.`description`, `piktur`.`images`.`image_checksum` FROM `piktur`.`images` ";
+                     $sql .= "JOIN ( `piktur`.`albums`, `piktur`.`album_images` ) ON ( `piktur`.`images`.`image_id` = `piktur`.`album_images`.`image_id` ";
+                     $sql .= "AND `piktur`.`album_images`.`album_id` = `piktur`.`albums`.`album_id` )  ";
+                     $sql .= "JOIN `piktur`.`permissions` ON `piktur`.`albums`.`album_id`=`piktur`.`permissions`.`album_id` ";
+                     $sql .= "WHERE `piktur`.`images`.`image_id` = ? LIMIT 1";
+                     if ( !( $stmt = $db->prepare( $sql ) ) ) {
+                        die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
+                      } else {
+                        # Bind the variables into the prepared statement
+                        if ( !$stmt->bind_param( 'i', $_SESSION['image_id'] ) ) {
+                          die( 'Binding parameters failed: (' . $tag_stmt->errno . ') ' . $tag_stmt->error );
+                         } else {
+                            # Execute the SQL command
+                            if ( !$stmt->execute() ) {
+                              die( 'Execute failed: (' . $stmt->errno . ') ' . $stmt->error );
+                            } else {
+                               # Bind results
+                               $stmt->store_result();
+                               $results = $stmt->num_rows;
+                            }
+                         }
+                      }
+                   }
                 }
                 $stmt->bind_result( $file, $image_description, $image_checksum );
                 
