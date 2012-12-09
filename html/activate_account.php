@@ -7,7 +7,7 @@
   $album_id = '';
   $album_name = 'default';
   $album_description = 'Default album for user';
-  $basedir = '/var/www/html';
+  $basedir = '/var/www/';
   $path = '';
   $id = '';
   $name = '';
