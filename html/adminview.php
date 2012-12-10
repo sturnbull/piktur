@@ -103,11 +103,19 @@
                             $thumb->writeImage($new_thumb); 
                             $thumb->destroy();
 		         }
-                         echo "<img src\"".getDataURI(  preg_replace( "/\/var\/www\/pikturs\//", "/var/www/THUMB_pikturs/",$files[$i] ) )."></td>";
+                         echo "<img src=\"".getDataURI(  preg_replace( "/\/var\/www\/pikturs\//", "/var/www/THUMB_pikturs/",$files[$i] ) )."\"></td>";
                       }
                     ?>
-                    <td><a href=""><?php echo $owners[$i]?></a></td>
-                    <td><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_album.php?album='.$ids[$i] ?>"><?php echo $names[$i]?></a></td>
+                    <td><?php echo "<a href=\"".$protocol . $_SERVER['SERVER_NAME'].'/delete_user.php?user='.$owner_ids[$i]."\">".$owners[$i]?></a></td>
+                    <td>
+                    <?php 
+                     # You can't delete the default album, delete the user instead
+                     if (($names[$i] == 'default' ) ){
+                       echo $names[$i]?></td>
+                    <?php 
+                     } else {
+                       echo "<a href=\"".$protocol . $_SERVER['SERVER_NAME'].'/delete_album.php?album='.$ids[$i] ?>"><?php echo $names[$i]?></a></td>
+                     <?php } ?>
                     <td><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_image.php?image='.$image_ids[$i] ?>" ><?php echo $image_names[$i] ?></a></td>
                     <td><?php echo $image_descriptions[$i] ?></td>
                   </tr>
