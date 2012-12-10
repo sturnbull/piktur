@@ -57,13 +57,13 @@
             $stmt->close();
 
             # Create folder to store user albums
-            $path =  'pikturs/'.$name.'/default';
-            $thumb_path =  'THUMB_pikturs/'.$name.'/default';
-            if (!is_dir( "${basedir}/${path}" ) ) {
-              if ( !mkdir( "${basedir}/${path}", 0770, true ) ) {
+            $path =  $basedir.'pikturs/'.$name.'/default';
+            $thumb_path =  $basedir.'THUMB_pikturs/'.$name.'/default';
+            if (!is_dir( $path ) ) {
+              if ( !mkdir( $path, 0770, true ) ) {
                 die('Failed to create folder for user albums.');
               }
-              if ( !mkdir( "${basedir}/${thumb_path}", 0770, true ) ) {
+              if ( !mkdir( $thumb_path, 0770, true ) ) {
                 die('Failed to create folder for user thumbs.');
               }
             }

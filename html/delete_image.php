@@ -97,8 +97,7 @@
         # delete file
         if ( !is_dir( "$file" ) ) {
           unlink( $file );  
-          $thumb_parts = pathinfo($file);
-          unlink( $thumb_parts['dirname'].'/THUMB_'.$thumbparts['basename'] );  
+          unlink( preg_replace( "/\/var\/www\/pikturs\//", "/var/www/THUMB_pikturs/",$file) );  
         }
         # remove tags
         if ( !( $stmt = $db->prepare( "DELETE FROM `piktur`.`tags` WHERE `piktur`.`tags`.`image_id`=?;" ) ) ) {

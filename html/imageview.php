@@ -277,7 +277,7 @@ require 'header.php';
           </td>
           <td colspan="3" rowspan="1" height="200" width="650" class="center_middle">
 <?php if ( $results > 0 ) { ?>
-            <img alt="<?php echo $descriptions[$offset] ?>" src="<?php echo getDataURI( $files[$offset] ) ?>" height="auto" width="800"><br>
+            <img alt="<?php echo $descriptions[$offset] ?>" src="<?php echo getDataURI( $files[$offset] ) ?>" height="auto" width="600"><br>
 <?php }
 else {?>
             <div>You have not yet uploaded any pictures.<br />Please click <a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/image_upload.php' ?>">here</a> or the [New] button below.</div>
