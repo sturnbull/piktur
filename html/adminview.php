@@ -29,7 +29,7 @@
   # Only search if valid user_id variable exists
   if ( isset( $_SESSION['user_id'] ) ) {
     # Prepare the MySQL select statement on the server
-    if ( !( $stmt = $db->prepare( "SELECT `permissions`.`user_id` , `users`.`name`, `albums`.`album_id`, `albums`.`album_name`, `images`.`image_id`, CONCAT( `albums`.`path`, '/', `images`.`file_name` ) AS file, `images`.`file_name`, `images`.`description` FROM `albums` JOIN `permissions` ON `albums`.`album_id`=`permissions`.`album_id` JOIN `users` ON `permissions`.`user_id`=`users`.`user_id` JOIN `album_images` ON `album_images`.`album_id`=`albums`.`album_id` JOIN `images` ON `images`.`image_id`=`album_images`.`image_id` ORDER BY `name`, `album_name`, `file_name`;" ) ) ) {
+    if ( !( $stmt = $db->prepare( "SELECT `permissions`.`user_id` , `users`.`name`, `albums`.`album_id`, `albums`.`album_name`, `images`.`image_id`, CONCAT( `albums`.`path`, '/', `images`.`file_name` ) AS file, `images`.`file_name`, `images`.`description` FROM `albums` LEFT JOIN `permissions` ON `albums`.`album_id`=`permissions`.`album_id` LEFT JOIN `users` ON `permissions`.`user_id`=`users`.`user_id` LEFT JOIN `album_images` ON `album_images`.`album_id`=`albums`.`album_id` LEFT JOIN `images` ON `images`.`image_id`=`album_images`.`image_id` ORDER BY `name`, `album_name`, `file_name`;" ) ) ) {
         die( 'Prepare failed: (' . $db->errno . ') ' . $db->error );
     } else {
         # Execute the SQL command
@@ -88,18 +88,24 @@
                 $i=0; # set the inital  number
                 while ( $i < $results) { # display users album ?>
                   <tr>
-                    <td><img src="<?php 
-                      if (! file_exists (preg_replace( "/\/var\/www\/pikturs\//", "/var/www/THUMB_pikturs/",$files[$i] ) ) ) {
-                          $folder = '/var/www/pikturs/' . $owners[$i] . '/' . $names[$i];
-                          $thumbfolder = '/var/www/THUMB_pikturs/' . $owners[$i] . '/' . $names[$i];
-                          $info = pathinfo( $files[$i]) ;
-                          $new_thumb = $thumbfolder . '/' . basename( $files[$i], '.'.$info['extension']) . '.jpg';
-                          $thumb = new Imagick($files[$i]);
-                          $thumb->scaleImage(50 , 50 , TRUE);
-                          $thumb->writeImage($new_thumb); 
-                          $thumb->destroy();
-		      }
-                    echo getDataURI(  preg_replace( "/\/var\/www\/pikturs\//", "/var/www/THUMB_pikturs/",$files[$i] ) ) ?>" ></td>
+                    <td>
+                    <?php 
+                      if ($files[$i] == NULL) {
+                        echo "EMPTY</td>";
+                      } else {
+                         if (! file_exists (preg_replace( "/\/var\/www\/pikturs\//", "/var/www/THUMB_pikturs/",$files[$i] ) ) ) {
+                            $folder = '/var/www/pikturs/' . $owners[$i] . '/' . $names[$i];
+                            $thumbfolder = '/var/www/THUMB_pikturs/' . $owners[$i] . '/' . $names[$i];
+                            $info = pathinfo( $files[$i]) ;
+                            $new_thumb = $thumbfolder . '/' . basename( $files[$i], '.'.$info['extension']) . '.jpg';
+                            $thumb = new Imagick($files[$i]);
+                            $thumb->scaleImage(50 , 50 , TRUE);
+                            $thumb->writeImage($new_thumb); 
+                            $thumb->destroy();
+		         }
+                         echo "<img src\"".getDataURI(  preg_replace( "/\/var\/www\/pikturs\//", "/var/www/THUMB_pikturs/",$files[$i] ) )."></td>";
+                      }
+                    ?>
                     <td><a href=""><?php echo $owners[$i]?></a></td>
                     <td><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_album.php?album='.$ids[$i] ?>"><?php echo $names[$i]?></a></td>
                     <td><a href="<?php echo $protocol . $_SERVER['SERVER_NAME'].'/delete_image.php?image='.$image_ids[$i] ?>" ><?php echo $image_names[$i] ?></a></td>
